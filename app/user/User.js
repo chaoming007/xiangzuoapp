@@ -57,10 +57,17 @@ export default class User extends Component {
                                     <Text style={styles.t1}>Lv20</Text>
                                     <Text style={styles.t2}>等级</Text>
                                 </View>
-                                <View style={styles.classBox}>
-                                    <Text style={styles.t1}>62</Text>
-                                    <Text style={styles.t2}>关注</Text>
-                                </View>
+
+                                <TouchableHighlight 
+                                onPress={ ()=>{ navigation.navigate("Addressbook") }}
+                                activeOpacity={1} 
+                                underlayColor="transparent">
+                                    <View style={styles.classBox}>
+                                        <Text style={styles.t1}>62</Text>
+                                        <Text style={styles.t2}>关注</Text>
+                                    </View>
+                                </TouchableHighlight>
+
                                 <View style={styles.classBox}>
                                     <Text style={styles.t1}>247</Text>
                                     <Text style={styles.t2}>收藏</Text>

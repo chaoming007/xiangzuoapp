@@ -18,7 +18,7 @@ import Audiodetail from '../audio/Audiodetail'
 import Membercenter from '../user/Membercenter'
 import Setuppage  from '../user/Setuppage'
 import Editinformation  from '../user/Editinformation'
-
+import Addressbook  from '../user/Addressbook'
 
 const {height, width} = Dimensions.get('window')
 
@@ -84,6 +84,12 @@ export default createStackNavigator(
             screen:Editinformation,        //编辑个人信息
             navigationOptions:{             
                 headerTitle:"编辑个人信息"
+            }
+        },
+        Addressbook:{
+            screen:Addressbook,        //关注通讯录
+            navigationOptions:{             
+                headerTitle:"关注通讯录"
             }
         }
         // Detail:{
