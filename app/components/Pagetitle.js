@@ -22,7 +22,7 @@ export default class Pagetitle extends Component {
     }
 
     render() {
-        let {navigation,tit}=this.props
+        let {navigation,tit,rightIcon}=this.props
         return (
             <View style={styles.container}>
                 <View style={styles.topTitle}>
@@ -30,7 +30,9 @@ export default class Pagetitle extends Component {
                         <MaterialIcons onPress={()=>{ navigation.goBack() }}  name="arrow-back" size={22} color="#000000" />
                     </View>
                     <Text style={styles.titTxt} onPress={()=>{ navigation.goBack() }} >{tit}</Text>
-                
+                    {
+                        rightIcon?<View style={styles.rigBox}>{rightIcon}</View>:""
+                    }
                 </View>
             </View>
         )
@@ -63,6 +65,13 @@ export default class Pagetitle extends Component {
         top:"50%",
         marginTop:-10,
         left:15
+    },
+    rigBox:{
+        height:24,
+        position: "absolute",
+        top:"50%",
+        marginTop:-12,
+        right:15
     }
 
    

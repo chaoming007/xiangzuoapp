@@ -10,7 +10,7 @@ import {
     FlatList,
     StatusBar,
     Image,
-    Switch
+    TouchableHighlight
 } from 'react-native'
 
 
@@ -23,53 +23,50 @@ import Entypo from 'react-native-vector-icons/Entypo'
 import Title from '../components/Pagetitle'
 import Statusbar from '../components/Statusbar'
 
-import Guanzhuitem from '../components/Guanzhuitem'
 
 const {height, width} = Dimensions.get('window')
 
-class Addressbook extends Component {
+class Myfocus extends Component {
     constructor(props, context) {
       super(props, context)
       this.state={
-        dat:[0,1,2,3,4,5,6,7,8,9]
+        
       }
+  }
+  _titRightBox(nag){
+    return <TouchableHighlight 
+    onPress={ ()=>{ nag.navigate("Addressbook") } }
+    activeOpacity={1} 
+    underlayColor="transparent">
+        <Image  source={require("../assets/icon/Combined_Shape.png")} style={styles.rightIcon} />
+    </TouchableHighlight>
   }
 
   render() {
-	let {state}=this.props
+    let {state,navigation}=this.props
+    console.log(this.props)
     return (
         <View style={styles.container}>
             <Statusbar />
-            <Title  {...this.props} tit={"通讯录"} />
-            <FlatList
-            showsVerticalScrollIndicator={false}
-            data={this.state.dat}
-            keyExtractor={(item)=>item.toString()}
-            renderItem={ (item) =>
-                <View style={styles.itemBox}>
-                    <Guanzhuitem />
-                </View>
-            }
-            showsVerticalScrollIndicator= {false}
-            onEndReachedThreshold={0.2} 
-            onEndReached={()=>{ console.log("开始加载！") }}   
-            />
+            <Title  {...this.props} tit={"我的关注"} rightIcon={this._titRightBox(navigation)} />
+           <Text>我的关注</Text>
         </View>
     )
   }
 }
 
-export default connect(state=>({state}),{setSearchHistory})(Addressbook)
+export default connect(state=>({state}),{setSearchHistory})(Myfocus)
 
   const styles = StyleSheet.create({
    		container:{
 			flex: 1,
-			justifyContent:'center',
+			justifyContent:'flex-start',
 			alignItems: 'center',
             backgroundColor: '#ffffff'
         },
-        itemBox:{
-            width:width
+        rightIcon:{
+            width:21,
+            height:21
         }
   })
   

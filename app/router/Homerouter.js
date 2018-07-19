@@ -19,6 +19,7 @@ import Membercenter from '../user/Membercenter'
 import Setuppage  from '../user/Setuppage'
 import Editinformation  from '../user/Editinformation'
 import Addressbook  from '../user/Addressbook'
+import Myfocus  from '../user/Myfocus'
 
 const {height, width} = Dimensions.get('window')
 
@@ -90,6 +91,12 @@ export default createStackNavigator(
             screen:Addressbook,        //关注通讯录
             navigationOptions:{             
                 headerTitle:"关注通讯录"
+            }
+        },
+        Myfocus:{
+            screen:Myfocus,        //我的关注
+            navigationOptions:{             
+                headerTitle:"我的关注"
             }
         }
         // Detail:{

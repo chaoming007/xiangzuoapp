@@ -59,7 +59,7 @@ export default class User extends Component {
                                 </View>
 
                                 <TouchableHighlight 
-                                onPress={ ()=>{ navigation.navigate("Addressbook") }}
+                                onPress={ ()=>{ navigation.navigate("Myfocus") }}
                                 activeOpacity={1} 
                                 underlayColor="transparent">
                                     <View style={styles.classBox}>

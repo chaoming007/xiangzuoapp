@@ -22,6 +22,7 @@ export default class Guanzhuitem extends Component {
     }
   
     render() {
+        let {styTuff}=this.props
         return (
             <View style={styles.container}>
                 <View style={styles.gzBox}>
@@ -30,9 +31,14 @@ export default class Guanzhuitem extends Component {
                         <Text style={styles.nameTxt}>我是汽车爱好者</Text>
                         <Text style={styles.timeTxt}>发布时间：2012.06.15</Text>
                     </View>
-                    <View style={styles.gzBtnBox}>
-                        <Text style={styles.btnTxt}>关注</Text>
-                    </View>
+                    {
+                        styTuff?<View style={styles.gzBtnBox}>
+                                    <Text style={styles.btnTxt}>关注</Text>
+                                </View>:
+                                <View style={styles.ygzBtnBox}>
+                                    <Text style={styles.ygzBtnTxt}>已关注</Text>
+                                </View>
+                    }
                 </View>
             </View>
         )
@@ -83,6 +89,18 @@ const styles = StyleSheet.create({
         lineHeight:30,
         textAlign:"center",
         color:"#ffffff",
+        fontSize: 12
+    },
+    ygzBtnBox:{
+        width:100,
+        height:30,
+        borderRadius:5,
+        backgroundColor:"#E0E2E7"
+    },
+    ygzBtnTxt:{
+        lineHeight:30,
+        textAlign:"center",
+        color:"#0D0E15",
         fontSize: 12
     }
 	
