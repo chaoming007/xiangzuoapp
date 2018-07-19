@@ -36,22 +36,28 @@ class Editinformation extends Component {
               value:0
           },        
           date:["2010年","1月","1日"],
-          areaVal:['北京', '北京', '东城区']  //默认选择地区
+          areaVal:['北京', '北京', '东城区'],  //默认选择地区
+          zzTuff:false
       }
     }
 
 
     _showGenderPicker(){                 //性别选择
         let _this=this
+        _this.setState({
+            zzTuff:true
+        })
         Picker.init({
             pickerData:["男","女"],
             selectedValue: [_this.state.gender.title],
             pickerTitleText:"性别",
             pickerFontColor: [0, 0 ,0, 1],
+            pickerBg:[255,255,255,1],
             pickerCancelBtnText:"取消",
             pickerConfirmBtnText:"选择",
             onPickerConfirm: (pickedValue, pickedIndex) => {     //选择
                 _this.setState({
+                    zzTuff:false,
                     gender:{
                         title:pickedValue.toString(),
                         value:pickedIndex.toString()
@@ -60,6 +66,9 @@ class Editinformation extends Component {
             },
             onPickerCancel: (pickedValue, pickedIndex) => {     //取消
                 console.log("关闭")
+                _this.setState({
+                    zzTuff:false
+                })
             }
         })
         Picker.show()
@@ -118,20 +127,28 @@ class Editinformation extends Component {
     }
     _showAreaPicker(){                   //地区选择
         let _this=this
+        _this.setState({
+            zzTuff:true
+        })
         Picker.init({
             pickerData: _this._createAreaData(),
             selectedValue: _this.state.areaVal,
             pickerTitleText:"地区选择",
             pickerFontColor: [0, 0 ,0, 1],
+            pickerBg:[255,255,255,1],
             pickerCancelBtnText:"取消",
             pickerConfirmBtnText:"选择",
             onPickerConfirm:(pickedValue, pickedIndex)=> {
                 _this.setState({
+                    zzTuff:false,
                     areaVal:pickedValue
                 })
             },
             onPickerCancel:(pickedValue, pickedIndex) => {
                 console.log("关闭")
+                _this.setState({
+                    zzTuff:false
+                })
             }
         })
         Picker.show()
@@ -139,9 +156,13 @@ class Editinformation extends Component {
 
     _showDatePicker(){      //日期选择
         let _this=this
+        _this.setState({
+            zzTuff:true
+        })
         Picker.init({
             pickerData: _this._createDateData(),
             pickerTitleText:"日期选择",
+            pickerBg:[255,255,255,1],
             pickerFontColor: [0, 0 ,0, 1],
             pickerCancelBtnText:"取消",
             pickerConfirmBtnText:"选择",
@@ -149,11 +170,15 @@ class Editinformation extends Component {
             onPickerConfirm: (pickedValue, pickedIndex) => {
                 console.log(pickedValue)
                 _this.setState({
+                    zzTuff:false,
                     date:pickedValue
                 })
             },
             onPickerCancel: (pickedValue, pickedIndex) => {
-                console.log("关闭");
+                console.log("关闭")
+                _this.setState({
+                    zzTuff:false
+                })
             }
         })
         Picker.show()
@@ -174,6 +199,7 @@ class Editinformation extends Component {
         <View style={styles.container}>
             <Statusbar />
             <Title  {...this.props} tit={"编辑个人信息"} />
+            
 
             <ScrollView>
                     <View style={styles.txWarpBox}>
@@ -249,6 +275,10 @@ class Editinformation extends Component {
 
 
             </ScrollView>
+            {
+                this.state.zzTuff?<View style={styles.zzBox}></View>:""
+            }
+            
 
         </View>
     )
@@ -333,6 +363,14 @@ export default connect(state=>({state}),{setSearchHistory})(Editinformation)
             backgroundColor:'red',
             height:40,
             lineHeight:40
+        },
+        zzBox:{
+            width:width,
+            height:height,
+            backgroundColor:"rgba(0,0,0,0.7)",
+            position:"absolute",
+            top:0,
+            left:0
         }
   })
   
