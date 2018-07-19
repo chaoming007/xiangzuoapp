@@ -21,7 +21,6 @@ export default class Lookhistory extends Component {
     constructor(props, context) {
       super(props, context)
       this.state={
-        title:"浏览历史",
         dat:[0,1,2,3,4,5,6,7,8,9]
       }
     }
@@ -30,7 +29,7 @@ export default class Lookhistory extends Component {
         return (
             <View style={styles.container}>
                 <Statusbar />
-                <Title  {...this.props} tit={this.state.title} />
+                <Title  {...this.props} tit={"浏览历史"} />
                 <FlatList
                 showsVerticalScrollIndicator={false}
                 data={this.state.dat}

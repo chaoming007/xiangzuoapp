@@ -29,7 +29,7 @@ class Addressbook extends Component {
     constructor(props, context) {
       super(props, context)
       this.state={
-        
+        dat:[0,1,2,3,4,5,6,7,8,9]
       }
   }
 
@@ -39,7 +39,15 @@ class Addressbook extends Component {
         <View style={styles.container}>
             <Statusbar />
             <Title  {...this.props} tit={"通讯录"} />
-            <Text>通讯录</Text>
+            <FlatList
+            showsVerticalScrollIndicator={false}
+            data={this.state.dat}
+            keyExtractor={(item)=>item.toString()}
+            renderItem={ (item) =><Item />}
+            showsVerticalScrollIndicator= {false}
+            onEndReachedThreshold={0.2} 
+            onEndReached={()=>{ console.log("开始加载！") }}   
+            />
         </View>
     )
   }
