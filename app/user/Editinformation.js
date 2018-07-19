@@ -17,6 +17,9 @@ import {connect} from 'react-redux'
 import {setSearchHistory} from '../store/Reducers'
 
 import Picker from 'react-native-picker'
+import ImagePicker from 'react-native-image-picker'
+import photoOption from '../util/potoOption'
+
 import area from '../util/area.json';
 import Entypo from 'react-native-vector-icons/Entypo'
 
@@ -184,12 +187,36 @@ class Editinformation extends Component {
         Picker.show()
     }
 
+    _zzClickFun(){
+       
+        this.setState({
+            zzTuff:false
+        })
+        Picker.hide()
+    }
+
     _setNumFun(num){
         let n=parseInt(num)
         if(n<10){
             n="0"+n
         }
         return n
+    }
+
+    _chooseImageFun(){       //选择图片
+        ImagePicker.showImagePicker(photoOption,(response)=>{
+            if(response.didCancel) {
+                console.log('用户取消了选择！');
+            } else if (response.error) {
+                alert("ImagePicker发生错误：" + response.error);
+            } else if (response.customButton){
+                alert("自定义按钮点击：" + response.customButton)
+            } else {
+                let source = {uri:response.uri};
+                console.log(source)
+            }
+        })
+
     }
 
 
@@ -203,12 +230,17 @@ class Editinformation extends Component {
 
             <ScrollView>
                     <View style={styles.txWarpBox}>
-                        <View style={styles.txImgBox}>
-                            <Image source={require("../assets/img/123.jpg")} style={styles.txImg} />
-                            <View style={styles.txBg}>
-                                <Image source={require("../assets/icon/photo.png")} style={styles.photoIcon} />
+                        <TouchableHighlight 
+                        onPress={ ()=>{ this._chooseImageFun()  } }
+                        activeOpacity={1} 
+                        underlayColor="transparent">
+                            <View style={styles.txImgBox}>
+                                <Image source={require("../assets/img/123.jpg")} style={styles.txImg} />
+                                <View style={styles.txBg}>
+                                    <Image source={require("../assets/icon/photo.png")} style={styles.photoIcon} />
+                                </View>
                             </View>
-                        </View>
+                        </TouchableHighlight>
                     </View>
 
                     <View style={styles.contentBox}>
@@ -276,7 +308,7 @@ class Editinformation extends Component {
 
             </ScrollView>
             {
-                this.state.zzTuff?<View style={styles.zzBox}></View>:""
+                this.state.zzTuff?<View  style={styles.zzBox}></View>:""
             }
             
 
@@ -367,7 +399,7 @@ export default connect(state=>({state}),{setSearchHistory})(Editinformation)
         zzBox:{
             width:width,
             height:height,
-            backgroundColor:"rgba(0,0,0,0.7)",
+            backgroundColor:"rgba(0,0,0,0.5)",
             position:"absolute",
             top:0,
             left:0

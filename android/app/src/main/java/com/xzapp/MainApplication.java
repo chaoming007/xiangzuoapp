@@ -3,6 +3,7 @@ package com.xzapp;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.imagepicker.ImagePickerPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.beefe.picker.PickerViewPackage;
 import com.cmcewen.blurview.BlurViewPackage;
@@ -26,6 +27,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new ImagePickerPackage(),
             new VectorIconsPackage(),
             new PickerViewPackage(),
             new BlurViewPackage()

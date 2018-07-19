@@ -12,6 +12,7 @@
     "react-native": "0.55.4",
     "react-native-blur": "^3.2.2",
     "react-native-datepicker": "^1.7.2",
+    "react-native-image-picker": "^0.26.10",
     "react-native-parallax-scroll-view": "^0.21.3",
     "react-native-parallax-view": "^2.0.6",
     "react-native-picker": "^4.3.7",
