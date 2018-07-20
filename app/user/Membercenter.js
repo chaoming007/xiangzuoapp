@@ -51,7 +51,7 @@ export default class Membercenter extends Component {
                     <View style={styles.mainBox}>
                         <Text style={styles.titBox}>会员权益</Text>
                         <View style={styles.hyqyBox}>
-                            <ScrollView horizontal={true} >
+                            <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} >
                                 <View style={styles.markList}>
                                     <View style={styles.markItem}>
                                         <Image source={require("../assets/icon/zsbz.png")} style={styles.markImg} />
@@ -278,7 +278,7 @@ export default class Membercenter extends Component {
         backgroundColor:"#AF00FF"
     },
     btnTxt:{
-        lineHeight:30,
+        lineHeight:28,
         color:"#ffffff",
         textAlign:"center",
         fontSize:12

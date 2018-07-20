@@ -181,7 +181,8 @@ const styles = StyleSheet.create({
         color:"#ffffff",
         lineHeight:25,
         fontSize: 18,
-        fontWeight:"bold"
+        fontWeight:"bold",
+        width:width-32
 
     },
     mainBox:{

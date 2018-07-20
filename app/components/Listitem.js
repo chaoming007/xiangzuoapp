@@ -182,7 +182,8 @@ export default class Newsitem extends Component {
     userBox:{
         flexDirection: 'row',
         alignItems:"center",
-        justifyContent:"flex-start"
+        justifyContent:"flex-start",
+        height:30
     },
     userImg:{
         width:30,
@@ -193,20 +194,23 @@ export default class Newsitem extends Component {
     userName:{
         height:20,
         fontSize: 14,
-        lineHeight:20
+        lineHeight:18
     },
     videoInfo:{
         flexDirection: 'row',
         justifyContent:"flex-end",
-        alignItems:"center"
+        alignItems:"center",
+        height:30
     },
     scNum:{
         flexDirection: 'row',
-        height:20,
+        height:30,
         alignItems:"center"
     },
     scNumTxt:{
         fontSize:14,
+        lineHeight:28,
+        height:30,
         color:"#717B93"
     },
     scImg:{

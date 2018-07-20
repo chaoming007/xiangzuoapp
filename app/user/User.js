@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import {
-  Platform,
   StyleSheet,
   Text,
   View,
@@ -11,7 +10,7 @@ import {
   TouchableHighlight
 } from 'react-native';
 
-const {height, width} = Dimensions.get('window')
+const {width} = Dimensions.get('window')
 
 export default class User extends Component {
     constructor(props, context) {
@@ -231,7 +230,9 @@ export default class User extends Component {
         flexDirection: 'row'
     },
     classBox:{
-        flex:1
+        flex:1,
+        justifyContent:"center",
+        alignItems:"center"
     },
     t1:{
         lineHeight:28,
@@ -246,7 +247,8 @@ export default class User extends Component {
         lineHeight:17,
         fontSize:12,
         color:"#000000",
-        textAlign:"center"
+        textAlign:"center",
+        marginBottom:10
     },
     navContent:{
         backgroundColor:"#ffffff",
@@ -277,9 +279,8 @@ export default class User extends Component {
         color:"#0D0E15"
     },
     jtBox:{
-        flexDirection:"row",
-        justifyContent:"flex-end",
-        alignItems:"center"
+        justifyContent:"center",
+        alignItems:"flex-end"
     },
     jtImg:{
         width:22,

@@ -112,11 +112,13 @@ export default class Videoitem extends Component {
         height:16,
         backgroundColor:"#ec333c",
         borderRadius:3,
-        marginBottom: 5
+        marginBottom: 5,
+        justifyContent:"center",
+        alignItems:"center"
     },
     hotBoxTxt:{
         fontSize: 12,
-        lineHeight:16,
+        lineHeight:14,
         color:"#ffffff",
         textAlign:"center"
     },

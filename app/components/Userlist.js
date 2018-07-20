@@ -42,14 +42,14 @@ export default class Userlist extends Component {
                                     创意计划自媒体签约经纪人
                                 </Text>
                                 <View style={styles.userInfoBox}>
-                                    <View style={styles.fsBox}>
-                                        <Text style={styles.fsTxt}>粉丝 122234</Text>
-                                    </View>
-                                    <View style={styles.line}></View>
-                                    <View style={styles.fbBox}>
-                                        <Text style={styles.fbTxt}>发布 122234</Text>
-                                    </View>
+                                <View style={styles.fsBox}>
+                                    <Text style={styles.fsTxt} numberOfLines={1}>粉丝1222</Text>
                                 </View>
+                                <View style={styles.line}></View>
+                                <View style={styles.fbBox}>
+                                    <Text style={styles.fbTxt} numberOfLines={1}>发布12222</Text>
+                                </View>
+                            </View>
 
                             </View>
                         </View>
@@ -70,11 +70,11 @@ export default class Userlist extends Component {
                                     </Text>
                                     <View style={styles.userInfoBox}>
                                         <View style={styles.fsBox}>
-                                            <Text style={styles.fsTxt}>粉丝 122234</Text>
+                                            <Text style={styles.fsTxt} numberOfLines={1}>粉丝1222344545</Text>
                                         </View>
                                         <View style={styles.line}></View>
                                         <View style={styles.fbBox}>
-                                            <Text style={styles.fbTxt}>发布 122234</Text>
+                                            <Text style={styles.fbTxt} numberOfLines={1}>发布122234</Text>
                                         </View>
                                     </View>
 
@@ -100,11 +100,11 @@ export default class Userlist extends Component {
                                     </Text>
                                     <View style={styles.userInfoBox}>
                                         <View style={styles.fsBox}>
-                                            <Text style={styles.fsTxt}>粉丝 122234</Text>
+                                            <Text style={styles.fsTxt} numberOfLines={1}>粉丝1222344545</Text>
                                         </View>
                                         <View style={styles.line}></View>
                                         <View style={styles.fbBox}>
-                                            <Text style={styles.fbTxt}>发布 122234</Text>
+                                            <Text style={styles.fbTxt} numberOfLines={1}>发布122234</Text>
                                         </View>
                                     </View>
 
@@ -129,11 +129,11 @@ export default class Userlist extends Component {
                                     </Text>
                                     <View style={styles.userInfoBox}>
                                         <View style={styles.fsBox}>
-                                            <Text style={styles.fsTxt}>粉丝 122234</Text>
+                                            <Text style={styles.fsTxt} numberOfLines={1}>粉丝1222344545</Text>
                                         </View>
                                         <View style={styles.line}></View>
                                         <View style={styles.fbBox}>
-                                            <Text style={styles.fbTxt}>发布 122234</Text>
+                                            <Text style={styles.fbTxt} numberOfLines={1}>发布122234</Text>
                                         </View>
                                     </View>
 
@@ -153,16 +153,16 @@ export default class Userlist extends Component {
                                     <Text style={styles.nameTxt}>
                                         妮可基德曼
                                     </Text>
-                                    <Text style={styles.userInfoTxt}>
+                                    <Text style={styles.userInfoTxt} numberOfLines={1}>
                                         创意计划自媒体签约经纪人
                                     </Text>
                                     <View style={styles.userInfoBox}>
                                         <View style={styles.fsBox}>
-                                            <Text style={styles.fsTxt}>粉丝 122234</Text>
+                                            <Text style={styles.fsTxt} numberOfLines={1}>粉丝1222344545</Text>
                                         </View>
                                         <View style={styles.line}></View>
                                         <View style={styles.fbBox}>
-                                            <Text style={styles.fbTxt}>发布 122234</Text>
+                                            <Text style={styles.fbTxt} numberOfLines={1}>发布122234</Text>
                                         </View>
                                     </View>
 
@@ -238,13 +238,13 @@ export default class Userlist extends Component {
         height:22,
         fontSize: 16,
         fontWeight:"bold",
-        marginBottom: 2
+        marginBottom: 10
     },
     userInfoTxt:{
         textAlign:"center",
         lineHeight:16,
         fontSize: 12,
-        marginBottom: 24
+        marginBottom: 16
     },
     userInfoBox:{
         flexDirection: 'row',
@@ -253,7 +253,9 @@ export default class Userlist extends Component {
     },
     fsBox:{
         flex:1,
-        height:17
+        height:17,
+        justifyContent:"center",
+        alignItems:"center"
     },
     fsTxt:{
         fontSize: 12,
@@ -262,7 +264,9 @@ export default class Userlist extends Component {
     },
     fbBox:{
         flex:1,
-        height:17
+        height:17,
+        justifyContent:"center",
+        alignItems:"center"
     },
     fbTxt:{
         fontSize: 12,
@@ -270,7 +274,7 @@ export default class Userlist extends Component {
         textAlign:"left"
     },
     line:{
-        height:19,
+        height:15,
         width:1,
         backgroundColor:"#DCE2EA",
         marginLeft: 10,

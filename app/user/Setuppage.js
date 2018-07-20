@@ -1,14 +1,10 @@
 import React, { Component } from 'react'
 import {
-    Platform,
     StyleSheet,
     Text,
     View,
     ScrollView,
     Dimensions,
-    Modal,
-    FlatList,
-    StatusBar,
     Image,
     Switch
 } from 'react-native'
@@ -18,12 +14,11 @@ import {connect} from 'react-redux'
 import {setSearchHistory} from '../store/Reducers'
 
 
-import Entypo from 'react-native-vector-icons/Entypo'
 
 import Title from '../components/Pagetitle'
 import Statusbar from '../components/Statusbar'
 
-const {height, width} = Dimensions.get('window')
+const {width} = Dimensions.get('window')
 
 class Setuppage extends Component {
     constructor(props, context) {
@@ -34,7 +29,6 @@ class Setuppage extends Component {
   }
 
   render() {
-	let {state}=this.props
     return (
         <View style={styles.container}>
             <Statusbar />

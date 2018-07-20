@@ -94,7 +94,8 @@ export default class Newsitem extends Component {
         textAlign:"center",
         fontSize:14,
         color:"#ffffff",
-        fontWeight:"bold"
+        fontWeight:"bold",
+        height:33
     },
     imgWarp:{
         width:width-32,

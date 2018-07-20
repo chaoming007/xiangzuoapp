@@ -83,10 +83,12 @@ const styles = StyleSheet.create({
         width:100,
         height:30,
         borderRadius:5,
-        backgroundColor:"#AF00FF"
+        backgroundColor:"#AF00FF",
+        justifyContent:"center",
+        alignItems:"center"
     },
     btnTxt:{
-        lineHeight:30,
+        lineHeight:28,
         textAlign:"center",
         color:"#ffffff",
         fontSize: 12
@@ -95,10 +97,12 @@ const styles = StyleSheet.create({
         width:100,
         height:30,
         borderRadius:5,
-        backgroundColor:"#E0E2E7"
+        backgroundColor:"#E0E2E7",
+        justifyContent:"center",
+        alignItems:"center"
     },
     ygzBtnTxt:{
-        lineHeight:30,
+        lineHeight:28,
         textAlign:"center",
         color:"#0D0E15",
         fontSize: 12

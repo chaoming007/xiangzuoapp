@@ -190,7 +190,8 @@ export default class Xinlingvideolist extends Component {
        top:8,
        left:10,
        flexDirection: 'row',
-       alignItems: 'center'
+       alignItems: 'center',
+       justifyContent:"center"
     },
     playIcon:{
         width:12,
@@ -198,7 +199,9 @@ export default class Xinlingvideolist extends Component {
         marginRight:5
     },
     playTxt:{
-        lineHeight:17,
+        lineHeight:15,
+        fontFamily: 'Helvetica',
+        height:17,
         fontSize: 12,
         color:"#ffffff",
         textAlign:"left"

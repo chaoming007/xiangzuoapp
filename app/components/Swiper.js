@@ -52,7 +52,7 @@ export default class Search extends Component {
                         <View style={styles.imgViewBox}>
                             <Image source={require('../assets/img/b.jpg')} style={styles.imgSty}/>
                             <View style={styles.imgTxt}>
-                                <Text style={styles.titH1}>这是标题1</Text>
+                                <Text style={styles.titH1}>这是标题1111</Text>
                                 <Text style={styles.titH2}>这是内容这是内容</Text>
                             </View>
                         </View>
@@ -111,19 +111,19 @@ export default class Search extends Component {
         paddingVertical: 10,
         backgroundColor:"#ffffff",
         borderBottomLeftRadius: 10,
-        borderBottomRightRadius: 10
+        borderBottomRightRadius: 10,
+        justifyContent:"center"
     },
     titH1:{
         height:28,
         fontSize: 20,
         lineHeight:28,
-        color:"#000000",
-        marginBottom: 5
+        color:"#000000"
     },
     titH2:{
-        height:12,
+        height:15,
         fontSize: 12,
-        lineHeight:12,
+        lineHeight:15,
         color:"#000000"
     }
   })

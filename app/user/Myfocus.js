@@ -1,14 +1,9 @@
 import React, { Component } from 'react'
 import {
-    Platform,
     StyleSheet,
     Text,
     View,
-    ScrollView,
     Dimensions,
-    Modal,
-    FlatList,
-    StatusBar,
     Image,
     TouchableHighlight
 } from 'react-native'
@@ -18,13 +13,11 @@ import {connect} from 'react-redux'
 import {setSearchHistory} from '../store/Reducers'
 
 
-import Entypo from 'react-native-vector-icons/Entypo'
 
 import Title from '../components/Pagetitle'
 import Statusbar from '../components/Statusbar'
 
 
-const {height, width} = Dimensions.get('window')
 
 class Myfocus extends Component {
     constructor(props, context) {
@@ -43,7 +36,7 @@ class Myfocus extends Component {
   }
 
   render() {
-    let {state,navigation}=this.props
+    let {navigation}=this.props
     console.log(this.props)
     return (
         <View style={styles.container}>

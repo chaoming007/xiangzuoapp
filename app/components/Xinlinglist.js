@@ -33,19 +33,19 @@ export default class Videoitem extends Component {
                             <View style={styles.infoBox}>
                                 <View style={styles.v1Box}>
                                     <View style={[styles.txtBoxWarp,styles.b1]}>
-                                        <Text style={styles.txtSty}>雷克萨斯怎么样，雷克萨样？</Text>
+                                        <Text style={styles.txtSty} numberOfLines={1} >雷克萨斯怎么样，雷克萨样？</Text>
                                     </View>
                                     <Image source={require("../assets/img/a.jpg")} style={styles.userImg} />
                                 </View>
                                 <View style={styles.v1Box}>
                                     <View style={[styles.txtBoxWarp,styles.b2]}>
-                                        <Text style={styles.txtSty}>雷克萨斯怎么样，雷克萨样？雷克萨斯怎么样雷克萨斯怎么样</Text>
+                                        <Text style={styles.txtSty} numberOfLines={2}>雷克萨斯怎么样，雷克萨样？雷克萨斯怎么样雷克萨斯怎么样</Text>
                                     </View>
                                     <Image source={require("../assets/img/b.jpg")} style={styles.userImg} />
                                 </View>
                                 <View style={styles.v1Box}>
                                     <View style={[styles.txtBoxWarp,styles.b3]}>
-                                        <Text style={styles.txtSty}>雷克萨斯怎么样？</Text>
+                                        <Text style={styles.txtSty} numberOfLines={1}>雷克萨斯怎么样？</Text>
                                     </View>
                                     <Image source={require("../assets/img/c.jpg")} style={styles.userImg} />
                                 </View>
@@ -61,19 +61,19 @@ export default class Videoitem extends Component {
                             <View style={styles.infoBox}>
                                 <View style={styles.v1Box}>
                                     <View style={[styles.txtBoxWarp,styles.b1]}>
-                                        <Text style={styles.txtSty}>雷克萨斯怎么样，雷克萨样？</Text>
+                                        <Text style={styles.txtSty} numberOfLines={1}>雷克萨斯怎么样，雷克萨样？</Text>
                                     </View>
                                     <Image source={require("../assets/img/a.jpg")} style={styles.userImg} />
                                 </View>
                                 <View style={styles.v1Box}>
                                     <View style={[styles.txtBoxWarp,styles.b2]}>
-                                        <Text style={styles.txtSty}>雷克萨斯怎么样，雷克萨样？雷克萨斯怎么样雷克萨斯怎么样</Text>
+                                        <Text style={styles.txtSty} numberOfLines={2}>雷克萨斯怎么样，雷克萨样？雷克萨斯怎么样雷克萨斯怎么样</Text>
                                     </View>
                                     <Image source={require("../assets/img/b.jpg")} style={styles.userImg} />
                                 </View>
                                 <View style={styles.v1Box}>
                                     <View style={[styles.txtBoxWarp,styles.b3]}>
-                                        <Text style={styles.txtSty}>雷克萨斯怎么样？</Text>
+                                        <Text style={styles.txtSty} numberOfLines={1}>雷克萨斯怎么样？</Text>
                                     </View>
                                     <Image source={require("../assets/img/c.jpg")} style={styles.userImg} />
                                 </View>
@@ -89,19 +89,19 @@ export default class Videoitem extends Component {
                             <View style={styles.infoBox}>
                                 <View style={styles.v1Box}>
                                     <View style={[styles.txtBoxWarp,styles.b1]}>
-                                        <Text style={styles.txtSty}>雷克萨斯怎么样，雷克萨样？</Text>
+                                        <Text style={styles.txtSty} numberOfLines={1}>雷克萨斯怎么样，雷克萨样？</Text>
                                     </View>
                                     <Image source={require("../assets/img/a.jpg")} style={styles.userImg} />
                                 </View>
                                 <View style={styles.v1Box}>
                                     <View style={[styles.txtBoxWarp,styles.b2]}>
-                                        <Text style={styles.txtSty}>雷克萨斯怎么样，雷克萨样？雷克萨斯怎么样雷克萨斯怎么样</Text>
+                                        <Text style={styles.txtSty} numberOfLines={2}>雷克萨斯怎么样，雷克萨样？雷克萨斯怎么样雷克萨斯怎么样</Text>
                                     </View>
                                     <Image source={require("../assets/img/b.jpg")} style={styles.userImg} />
                                 </View>
                                 <View style={styles.v1Box}>
                                     <View style={[styles.txtBoxWarp,styles.b3]}>
-                                        <Text style={styles.txtSty}>雷克萨斯怎么样？</Text>
+                                        <Text style={styles.txtSty} numberOfLines={1}>雷克萨斯怎么样？</Text>
                                     </View>
                                     <Image source={require("../assets/img/c.jpg")} style={styles.userImg} />
                                 </View>
@@ -113,59 +113,59 @@ export default class Videoitem extends Component {
 
 
                     <View style={styles.contentBox}>
-                            <Image source={require("../assets/img/4.jpg")} style={styles.imgBgSty} />
-                            <View style={styles.infoBox}>
-                                <View style={styles.v1Box}>
-                                    <View style={[styles.txtBoxWarp,styles.b1]}>
-                                        <Text style={styles.txtSty}>雷克萨斯怎么样，雷克萨样？</Text>
-                                    </View>
-                                    <Image source={require("../assets/img/a.jpg")} style={styles.userImg} />
-                                </View>
-                                <View style={styles.v1Box}>
-                                    <View style={[styles.txtBoxWarp,styles.b2]}>
-                                        <Text style={styles.txtSty}>雷克萨斯怎么样，雷克萨样？雷克萨斯怎么样雷克萨斯怎么样</Text>
-                                    </View>
-                                    <Image source={require("../assets/img/b.jpg")} style={styles.userImg} />
-                                </View>
-                                <View style={styles.v1Box}>
-                                    <View style={[styles.txtBoxWarp,styles.b3]}>
-                                        <Text style={styles.txtSty}>雷克萨斯怎么样？</Text>
-                                    </View>
-                                    <Image source={require("../assets/img/c.jpg")} style={styles.userImg} />
-                                </View>
-                                <Text style={styles.titMsg} numberOfLines={2}>
-                                    雷克萨斯怎么样雷克萨，斯怎么样雷克萨斯怎么样斯怎么样雷克萨斯怎么样斯怎么样雷克萨斯怎么样
-                                </Text>
+                    <Image source={require("../assets/img/4.jpg")} style={styles.imgBgSty} />
+                    <View style={styles.infoBox}>
+                        <View style={styles.v1Box}>
+                            <View style={[styles.txtBoxWarp,styles.b1]}>
+                                <Text style={styles.txtSty} numberOfLines={1}>雷克萨斯怎么样，雷克萨样？</Text>
                             </View>
+                            <Image source={require("../assets/img/a.jpg")} style={styles.userImg} />
+                        </View>
+                        <View style={styles.v1Box}>
+                            <View style={[styles.txtBoxWarp,styles.b2]}>
+                                <Text style={styles.txtSty} numberOfLines={2}>雷克萨斯怎么样，雷克萨样？雷克萨斯怎么样雷克萨斯怎么样</Text>
+                            </View>
+                            <Image source={require("../assets/img/b.jpg")} style={styles.userImg} />
+                        </View>
+                        <View style={styles.v1Box}>
+                            <View style={[styles.txtBoxWarp,styles.b3]}>
+                                <Text style={styles.txtSty} numberOfLines={1}>雷克萨斯怎么样？</Text>
+                            </View>
+                            <Image source={require("../assets/img/c.jpg")} style={styles.userImg} />
+                        </View>
+                        <Text style={styles.titMsg} numberOfLines={2}>
+                            雷克萨斯怎么样雷克萨，斯怎么样雷克萨斯怎么样斯怎么样雷克萨斯怎么样斯怎么样雷克萨斯怎么样
+                        </Text>
                     </View>
+            </View>
 
 
-                    <View style={styles.contentBox}>
-                            <Image source={require("../assets/img/4.jpg")} style={styles.imgBgSty} />
-                            <View style={styles.infoBox}>
-                                <View style={styles.v1Box}>
-                                    <View style={[styles.txtBoxWarp,styles.b1]}>
-                                        <Text style={styles.txtSty}>雷克萨斯怎么样，雷克萨样？</Text>
-                                    </View>
-                                    <Image source={require("../assets/img/a.jpg")} style={styles.userImg} />
-                                </View>
-                                <View style={styles.v1Box}>
-                                    <View style={[styles.txtBoxWarp,styles.b2]}>
-                                        <Text style={styles.txtSty}>雷克萨斯怎么样，雷克萨样？雷克萨斯怎么样雷克萨斯怎么样</Text>
-                                    </View>
-                                    <Image source={require("../assets/img/b.jpg")} style={styles.userImg} />
-                                </View>
-                                <View style={styles.v1Box}>
-                                    <View style={[styles.txtBoxWarp,styles.b3]}>
-                                        <Text style={styles.txtSty}>雷克萨斯怎么样？</Text>
-                                    </View>
-                                    <Image source={require("../assets/img/c.jpg")} style={styles.userImg} />
-                                </View>
-                                <Text style={styles.titMsg} numberOfLines={2}>
-                                    雷克萨斯怎么样雷克萨，斯怎么样雷克萨斯怎么样斯怎么样雷克萨斯怎么样斯怎么样雷克萨斯怎么样
-                                </Text>
-                            </View>
+            <View style={styles.contentBox}>
+            <Image source={require("../assets/img/4.jpg")} style={styles.imgBgSty} />
+            <View style={styles.infoBox}>
+                <View style={styles.v1Box}>
+                    <View style={[styles.txtBoxWarp,styles.b1]}>
+                        <Text style={styles.txtSty} numberOfLines={1}>雷克萨斯怎么样，雷克萨样？</Text>
                     </View>
+                    <Image source={require("../assets/img/a.jpg")} style={styles.userImg} />
+                </View>
+                <View style={styles.v1Box}>
+                    <View style={[styles.txtBoxWarp,styles.b2]}>
+                        <Text style={styles.txtSty} numberOfLines={2}>雷克萨斯怎么样，雷克萨样？雷克萨斯怎么样雷克萨斯怎么样</Text>
+                    </View>
+                    <Image source={require("../assets/img/b.jpg")} style={styles.userImg} />
+                </View>
+                <View style={styles.v1Box}>
+                    <View style={[styles.txtBoxWarp,styles.b3]}>
+                        <Text style={styles.txtSty} numberOfLines={1}>雷克萨斯怎么样？</Text>
+                    </View>
+                    <Image source={require("../assets/img/c.jpg")} style={styles.userImg} />
+                </View>
+                <Text style={styles.titMsg} numberOfLines={2}>
+                    雷克萨斯怎么样雷克萨，斯怎么样雷克萨斯怎么样斯怎么样雷克萨斯怎么样斯怎么样雷克萨斯怎么样
+                </Text>
+            </View>
+    </View>
 
 
 

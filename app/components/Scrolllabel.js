@@ -64,14 +64,16 @@ export default class Videoitem extends Component {
         paddingLeft: 15,
         paddingRight: 15,
         borderRadius: 15,
-        marginRight: 16
+        marginRight: 16,
+        justifyContent:"center",
+        alignItems:"center"
     },
     labelBoxFirst:{
         marginLeft: 15,
     },
     labelTxt:{
         textAlign:"center",
-        lineHeight:30,
+        lineHeight:28,
         fontSize:14,
         color:"#ffffff"
     },

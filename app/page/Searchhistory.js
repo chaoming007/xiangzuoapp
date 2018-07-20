@@ -103,7 +103,8 @@ export default class Searchhistory extends Component {
     inpWarp:{
         marginHorizontal: 16,
         flexDirection: 'row',
-        marginBottom: 15
+        marginBottom: 15,
+        width:width-32
     },
     inpWarpSty:{
         borderRadius: 20,
@@ -115,8 +116,7 @@ export default class Searchhistory extends Component {
     },
     inpSty:{
         height:40,
-        flex:1,
-        lineHeight:40
+        flex:1
     },
     inpIcon:{
         color:"#000000",
@@ -124,9 +124,10 @@ export default class Searchhistory extends Component {
         marginRight: 10
     },
     closeBox:{
-        width:32,
+        width:40,
         height:40,
-        marginLeft:20
+        marginLeft:20,
+        justifyContent:"flex-end"
     },
     closeTxt:{
         lineHeight:40,
@@ -177,13 +178,14 @@ export default class Searchhistory extends Component {
     },
     searchTxtBox:{
         height:48,
-        flex:1
+        flex:1,
+        justifyContent:"center"
     },
     searchTxt:{
         textAlign:"left",
         fontSize: 14,
         color:"#0D0E15",
-        lineHeight:48
+        lineHeight:46
     },
     searchUser:{
         width:40,
@@ -193,13 +195,14 @@ export default class Searchhistory extends Component {
     },
     searchName:{
         height:56,
-        flex:1
+        flex:1,
+        justifyContent:"center"
     },
     searchNameTxt:{
         textAlign:"left",
         fontSize: 14,
         color:"#0D0E15",
-        lineHeight:56
+        lineHeight:54
     },
     searchHot:{
         marginLeft:16,
@@ -214,10 +217,13 @@ export default class Searchhistory extends Component {
         borderRadius:15,
         paddingHorizontal: 15,
         marginRight: 15,
-        marginBottom:15
+        marginBottom:15,
+        justifyContent:"center",
+        alignItems:"center"
     },
     hotTxt:{
-        lineHeight:30,
+        lineHeight:28,
+        height:30,
         textAlign:"center",
         fontSize: 14,
         color:"#0D0E15",

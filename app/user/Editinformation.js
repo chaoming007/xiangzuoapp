@@ -228,7 +228,9 @@ class Editinformation extends Component {
             <Title  {...this.props} tit={"编辑个人信息"} />
             
 
-            <ScrollView>
+            <ScrollView
+            keyboardShouldPersistTaps={"never"}
+            >
                     <View style={styles.txWarpBox}>
                         <TouchableHighlight 
                         onPress={ ()=>{ this._chooseImageFun()  } }

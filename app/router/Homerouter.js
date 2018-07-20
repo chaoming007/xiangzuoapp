@@ -1,9 +1,4 @@
-import React, { Component } from 'react'
 import {
-  Platform,
-  StyleSheet,
-  Text,
-  View,
   Dimensions
 } from 'react-native'
 
@@ -21,7 +16,6 @@ import Editinformation  from '../user/Editinformation'
 import Addressbook  from '../user/Addressbook'
 import Myfocus  from '../user/Myfocus'
 
-const {height, width} = Dimensions.get('window')
 
 const TransitionConfiguration = () => ({
     screenInterpolator:(sceneProps) => {
@@ -124,10 +118,4 @@ export default createStackNavigator(
     }   
 )
 
-const styles = StyleSheet.create({
-    container: {
-        backgroundColor:"#ffffff",
-        height:height
-    }
-});
   
