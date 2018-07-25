@@ -15,7 +15,9 @@ import Setuppage  from '../user/Setuppage'
 import Editinformation  from '../user/Editinformation'
 import Addressbook  from '../user/Addressbook'
 import Myfocus  from '../user/Myfocus'
-
+import Usercollect  from '../user/Usercollect'
+import Userregister  from '../login/Userregister'
+import Login  from '../login/Login'
 
 const TransitionConfiguration = () => ({
     screenInterpolator:(sceneProps) => {
@@ -91,6 +93,24 @@ export default createStackNavigator(
             screen:Myfocus,        //我的关注
             navigationOptions:{             
                 headerTitle:"我的关注"
+            }
+        },
+        Usercollect:{
+            screen:Usercollect,        //用户收藏
+            navigationOptions:{             
+                headerTitle:"收藏"
+            }
+        },
+        Userregister:{
+            screen:Userregister,        //用户注册
+            navigationOptions:{             
+                headerTitle:"用户注册"
+            }
+        },
+        Login:{
+            screen:Login,        // 用户登录
+            navigationOptions:{             
+                headerTitle:"用户登录"
             }
         }
         // Detail:{

@@ -41,10 +41,16 @@ export default class User extends Component {
                             </TouchableHighlight>
                         </View>
                         <View style={styles.userInfoBox}>
-                            <View style={styles.avatorBox}>
-                                <Image source={require("../assets/img/123.jpg")} style={styles.avatorImg} />
-                                <Image source={require("../assets/icon/Vip.png")} style={styles.hyIcon} />
-                            </View>
+                            <TouchableHighlight 
+                            onPress={ ()=>{ navigation.navigate("Login") } }
+                            activeOpacity={1} 
+                            underlayColor="transparent">
+                                <View style={styles.avatorBox}>
+                                    <Image source={require("../assets/img/123.jpg")} style={styles.avatorImg} />
+                                    <Image source={require("../assets/icon/Vip.png")} style={styles.hyIcon} />
+                                </View>
+                            </TouchableHighlight>
+
                             <Text style={styles.userName}>
                                 大众科鲁兹
                             </Text>
@@ -52,14 +58,21 @@ export default class User extends Component {
                                 人间事常难遂人愿，且看明月又有几时圆
                             </Text>
                             <View style={styles.levelBox}>
-                                <View style={styles.classBox}>
-                                    <Text style={styles.t1}>Lv20</Text>
-                                    <Text style={styles.t2}>等级</Text>
-                                </View>
+                                <TouchableHighlight 
+                                onPress={ ()=>{ navigation.navigate("Usercollect") }}
+                                activeOpacity={1} 
+                                style={styles.touchBox}
+                                underlayColor="transparent">
+                                    <View style={styles.classBox}>
+                                        <Text style={styles.t1}>Lv20</Text>
+                                        <Text style={styles.t2}>等级</Text>
+                                    </View>
+                                </TouchableHighlight>
 
                                 <TouchableHighlight 
                                 onPress={ ()=>{ navigation.navigate("Myfocus") }}
                                 activeOpacity={1} 
+                                style={styles.touchBox}
                                 underlayColor="transparent">
                                     <View style={styles.classBox}>
                                         <Text style={styles.t1}>62</Text>
@@ -67,10 +80,17 @@ export default class User extends Component {
                                     </View>
                                 </TouchableHighlight>
 
-                                <View style={styles.classBox}>
-                                    <Text style={styles.t1}>247</Text>
-                                    <Text style={styles.t2}>收藏</Text>
-                                </View>
+                                <TouchableHighlight 
+                                onPress={ ()=>{ navigation.navigate("Usercollect") }}
+                                activeOpacity={1} 
+                                style={styles.touchBox}
+                                underlayColor="transparent">
+                                    <View style={styles.classBox}>
+                                        <Text style={styles.t1}>247</Text>
+                                        <Text style={styles.t2}>收藏</Text>
+                                    </View>
+                                </TouchableHighlight>
+
                             </View>
 
                         </View>
@@ -228,6 +248,9 @@ export default class User extends Component {
         shadowRadius:10,
         height:75,
         flexDirection: 'row'
+    },
+    touchBox:{
+        flex:1,
     },
     classBox:{
         flex:1,
