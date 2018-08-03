@@ -37,7 +37,9 @@ class Usercollect extends Component {
 
   render() {
     let {navigation}=this.props
+
     console.log(this.props)
+    
     return (
         <View style={styles.container}>
             <Statusbar />
