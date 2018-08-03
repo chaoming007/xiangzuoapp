@@ -9,6 +9,7 @@ import {
 } from 'react-native'
 
 
+
 import {connect} from 'react-redux'
 import {setSearchHistory} from '../store/Reducers'
 const {width} = Dimensions.get('window')
@@ -48,7 +49,7 @@ class Usercollect extends Component {
                     data={this.state.dat}
                     renderItem={ (data) => (
                         <View style={styles.rowSty}>
-                            <Text>I am in a SwipeListView</Text>
+                            <Text>范德萨范德萨发发</Text>
                         </View>
                     )}
                     renderHiddenItem={ (data) => (
