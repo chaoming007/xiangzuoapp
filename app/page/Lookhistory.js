@@ -3,8 +3,8 @@ import {
   Platform,
   StyleSheet,
   Text,
-	View,
-	ScrollView,
+  View,
+  ScrollView,
   Dimensions,
   FlatList
 } from 'react-native'

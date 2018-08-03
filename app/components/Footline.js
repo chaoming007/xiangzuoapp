@@ -10,6 +10,7 @@ import {
 } from 'react-native'
 
 const {height, width} = Dimensions.get('window')
+
 // import Feather from 'react-native-vector-icons/Feather'
 // import FontAwesome from 'react-native-vector-icons/FontAwesome'
 // import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
