@@ -38,13 +38,13 @@ const styles = StyleSheet.create({
     goTop:{
         width:42,
         height:42,
+        shadowOpacity:0.08, 
         borderRadius:21,
         backgroundColor:"#ffffff",
         alignItems:"center",
         justifyContent:"center",
         shadowOffset:{ width:0, height:0 }, 
         shadowColor:'#000000', 
-        shadowOpacity:0.08, 
         shadowRadius:5
     },
     touchSty:{
