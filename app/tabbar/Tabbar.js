@@ -2,7 +2,7 @@
  * @Author: chaoming007@163.com 
  * @Date: 2018-06-25 15:16:50 
  * @Last Modified by: chaoming007@163.com
- * @Last Modified time: 2018-07-10 11:33:22
+ * @Last Modified time: 2018-08-08 16:28:12
  */
 
 import React, { Component } from 'react';
@@ -34,7 +34,7 @@ export default class Tabbar extends Component {
     constructor(props, context) {
         super(props, context)
         this.state={
-            selectedTab: 'user'
+            selectedTab: 'home'
         }
     }
     render(){

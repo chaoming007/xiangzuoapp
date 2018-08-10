@@ -27,6 +27,11 @@ import Statusbar from '../components/Statusbar'
 import {setSearchHistory} from '../store/Reducers'
 import {connect} from 'react-redux'
 
+import request from '../util/request'
+import config from '../util/config'
+import Loading from '../components/Loading'
+
+
 import Entypo from 'react-native-vector-icons/Entypo'
 
 const {height, width} = Dimensions.get('window')
@@ -35,9 +40,26 @@ class Home extends Component {
     constructor(props, context) {
       super(props, context)
       this.state={
-       
+        isVisited:true
       }
-	}
+    }
+    componentDidMount(){
+        this._requestDatFun()
+    }
+
+    _requestDatFun(){           //请求数据
+       // request.get("https://mps.yiche.com/photo/v1/PhotoApi/api/v1/Style/GetCoverList?StyleIds=126313").then((dat)=>{
+        request.get("https://111.231.193.35/thor-api/app/page/home").then((dat)=>{
+            this.setState({
+                isVisited:false
+            })
+            console.log(dat)
+        }).catch((error) =>{  
+            console.log(error);  
+        })  
+    }
+
+
     render() {
 
 		let {state}=this.props
@@ -46,7 +68,7 @@ class Home extends Component {
         <View style={styles.container}>
             <Statusbar  />
             <Search {...this.props} />
-            
+            <Loading isVisited={this.state.isVisited}/>
 			<ScrollView
 			showsVerticalScrollIndicator={false}
 			>
