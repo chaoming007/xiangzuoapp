@@ -23,8 +23,6 @@ export default class Swiperobj extends Component {
 
     render() {
         let { picDat , navigation }=this.props
-       
-        console.log(this.props)
         return (
             <View style={styles.container}>
                 <View style={styles.imgBox}>

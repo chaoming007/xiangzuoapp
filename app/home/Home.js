@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
 import {
-  StyleSheet,
-  Text,
-	View,
-	ScrollView,
-	Dimensions} from 'react-native'
+    StyleSheet,
+    Text,
+    View,
+    TouchableHighlight,
+    ScrollView,
+    Dimensions} from 'react-native'
 
 import Search from '../components/Search'
 import Swiper from '../components/Swiper'
@@ -36,7 +37,9 @@ class Home extends Component {
       super(props, context)
       this.state={
         isVisited:true,
-        datJson:{}
+        datJson:{},
+        videoFirstDat:"",   //视觉盛宴第一个数据
+        videoListDat:[]     //视觉盛宴列表
       }
     }
     componentDidMount(){
@@ -46,18 +49,27 @@ class Home extends Component {
     _requestDatFun(){           //请求数据
         request.get("http://111.231.193.35/thor-api/app/page/home").then((dat)=>{
             if(dat.data.errCode===0 && dat.data.errMsg==="ok"){
+                let data=dat.data.data
                 this.setState({
                     isVisited:false,
-                    datJson:{...dat.data.data}
+                    datJson:{...data}
                 })
+                this._setVideoDatFun(data)
             }
         }).catch((err)=>{
             console.log(err)
         }) 
     }
+    _setVideoDatFun(dat){              //设置视频数据
+        let firstDat=dat.videos.slice(0,1)[0]
+        let listDat=dat.videos.slice(1)
+        this.setState({
+            videoFirstDat:firstDat,
+            videoListDat:listDat
+        })
+    }
 
     render() {
-
         return (
         <View style={styles.container}>
             <Statusbar  />
@@ -73,35 +85,42 @@ class Home extends Component {
                 {/* 幻灯片 end  */}
                 
                 {/* 类别导航 start  */}
-				<View style={styles.container}>
+				{ /*<View style={styles.container}>
 					<Navlist />
-                </View>
+                </View>*/
+                }
                 {/* 类别导航 end  */}
 
-				<View style={styles.container}>
-					{/* 视觉盛宴 start  */}
-						<View style={styles.contentBox}>
-							{/* 标题 start  */}
-								<View style={styles.titSty}>
-                                    <Text style={styles.titH2}>视觉盛宴</Text>
-                                    <View style={styles.titMore}>
-                                        <Text style={styles.titMoreTxt}>更多</Text>
-                                        <Entypo name="chevron-small-right" size={22} />
+                {/* 视觉盛宴 start  */}
+
+                    <View style={styles.container}>
+                            <View style={styles.contentBox}>
+                                {/* 标题 start  */}
+                                    <View style={styles.titSty}>
+                                        <Text style={styles.titH2}>视觉盛宴</Text>
+                                        <View style={styles.titMore}>
+                                            <Text style={styles.titMoreTxt}>更多</Text>
+                                            <Entypo name="chevron-small-right" size={22} />
+                                        </View>
                                     </View>
-								</View>
-							{/* 标题 end  */}
+                                {/* 标题 end  */}
+                             
+                                <Videoitem linkUrl={"Videodetail"} {...this.props} renderDat={this.state.videoFirstDat} />
+                                
+                            </View>
+                    </View>
 
-								<Videoitem />
-						</View>
-					{/* 视觉盛宴 end */}
-				</View>
+                    <View style={[styles.container,styles.videoBoxSty]}>
+                        <Scrollvideo {...this.props} renderDat={this.state.videoListDat} />
+                    </View>
 
-				<View style={[styles.container,styles.videoBoxSty]}>
-					<Scrollvideo />
-				</View>
-				<View style={[styles.container,styles.labelBoxSty]}>
-					<Scrolllabel />
-				</View>
+                    {
+                    /*<View style={[styles.container,styles.labelBoxSty]}>
+                        <Scrolllabel />
+                    </View>*/
+                    }
+                    
+                {/* 视觉盛宴 end */}
 
 
 				<View style={styles.container}>

@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import {
   Platform,
   StyleSheet,
@@ -23,8 +24,7 @@ export default class Videoitem extends Component {
 
     render() {
 
-        let { navigation, playTuff,linkUrl }=this.props
-    
+        let { navigation, playTuff,linkUrl,renderDat }=this.props    
         return (
             <View style={styles.container}>
 
@@ -34,7 +34,7 @@ export default class Videoitem extends Component {
                 activeOpacity={1} 
                 underlayColor="transparent">
                     <View style={styles.imgBox}>
-                        <Image source={require("../assets/img/1.png")} style={styles.imgSty} />
+                        <Image source={{uri:renderDat.cover}} style={styles.imgSty} />
                         {
                             playTuff?<View style={styles.playSty}>
                                         <Image source={require("../assets/icon/play.png")} style={styles.playImgSty} />
@@ -44,11 +44,11 @@ export default class Videoitem extends Component {
                 </TouchableHighlight>
 
                 <View style={styles.txtBox}>
-                    <Text style={styles.titBox}>下周的汽车行情怎么样？</Text>
+                    <Text style={styles.titBox}>{renderDat.title}</Text>
                     <View style={styles.infoBox}>
                         <View style={styles.userBox}>
                             <Image source={require("../assets/img/123.jpg")} style={styles.userImg} />
-                            <Text style={styles.userName}>你可开的慢名字</Text>
+                            <Text style={styles.userName}>{renderDat.authorName}</Text>
                         </View>
                         <View style={styles.videoInfo}>
                             <View style={styles.scNum}>
@@ -67,6 +67,11 @@ export default class Videoitem extends Component {
         )
     }
   }
+
+  Videoitem.propTypes = {
+    picDat: PropTypes.object
+  }
+  
 
   const styles = StyleSheet.create({
     container: {

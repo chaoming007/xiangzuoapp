@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import {
   Platform,
   StyleSheet,
+  TouchableHighlight,
   Text,
   View,
   Image,
@@ -19,70 +21,52 @@ export default class Videoitem extends Component {
     }
 
     render() {
+        let { renderDat , navigation } = this.props
         return (
             <View style={styles.container}>
                 <ScrollView 
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
                 >
-                    <View style={[styles.itemBox,styles.itemFirst]}>
-                        <Image source={require("../assets/img/4.jpg")} style={styles.itemBgImg} />
-                        <View style={styles.itemContent}>
-                            <View style={styles.hotBox}>
-                                <Text style={styles.hotBoxTxt}>HOT</Text>
-                            </View>
-                            <Text style={styles.txtBox} numberOfLines={2}>
-                                上海大众是一个好汽车，上海大众是一个好汽车上海大众是一个好汽车
-                            </Text>
-                            <View style={styles.userBox}>
-                                <Image source={require("../assets/img/1.png")} style={styles.userImg} />
-                                <Text style={styles.userName}>巴拉巴小魔仙</Text>
-                            </View>
-                        </View>
-                    </View>
-                    <View style={styles.itemBox}>
-                        <Image source={require("../assets/img/4.jpg")} style={styles.itemBgImg} />
-                        <View style={styles.itemContent}>
-                            <Text style={styles.txtBox} numberOfLines={2}>
-                                上海大众是一个好汽车，上海大众是一个好汽车上海大众是一个好汽车
-                            </Text>
-                            <View style={styles.userBox}>
-                                <Image source={require("../assets/img/1.png")} style={styles.userImg} />
-                                <Text style={styles.userName}>巴拉巴小魔仙</Text>
-                            </View>
-                        </View>
-                    </View>
-                    <View style={styles.itemBox}>
-                        <Image source={require("../assets/img/4.jpg")} style={styles.itemBgImg} />
-                        <View style={styles.itemContent}>
-                        
-                            <Text style={styles.txtBox} numberOfLines={2}>
-                                上海大众是一个好汽车，上海大众是一个好汽车上海大众是一个好汽车
-                            </Text>
-                            <View style={styles.userBox}>
-                                <Image source={require("../assets/img/1.png")} style={styles.userImg} />
-                                <Text style={styles.userName}>巴拉巴小魔仙</Text>
-                            </View>
-                        </View>
-                    </View>
-                    <View style={styles.itemBox}>
-                        <Image source={require("../assets/img/4.jpg")} style={styles.itemBgImg} />
-                        <View style={styles.itemContent}>
-                            
-                            <Text style={styles.txtBox} numberOfLines={2}>
-                                上海大众是一个好汽车，上海大众是一个好汽车上海大众是一个好汽车
-                            </Text>
-                            <View style={styles.userBox}>
-                                <Image source={require("../assets/img/1.png")} style={styles.userImg} />
-                                <Text style={styles.userName}>巴拉巴小魔仙</Text>
-                            </View>
-                        </View>
-                    </View>
+                {
+                    renderDat.map((item,key)=>{
 
+                        return <TouchableHighlight 
+                                key={key}  
+                                style={styles.touchSty} 
+                                activeOpacity={1} 
+                                underlayColor="transparent" 
+                                onPress={ ()=>{ navigation.navigate("Videodetail",{vid:item.id}) } }>
+
+                                <View style={ key===0?[styles.itemBox,styles.itemFirst]:styles.itemBox} >
+                                        <Image source={{uri:item.cover}} style={styles.itemBgImg} />
+                                        <View style={styles.itemContent}>
+                                            {/*
+                                                <View style={styles.hotBox}>
+                                                    <Text style={styles.hotBoxTxt}>HOT</Text>
+                                                </View>
+                                            */}
+                                            <Text style={styles.txtBox} numberOfLines={2}>
+                                                {item.title}
+                                            </Text>
+                                            <View style={styles.userBox}>
+                                                {/*<Image source={require("../assets/img/1.png")} style={styles.userImg} />*/}
+                                                <Text style={styles.userName}>{item.authorName}</Text>
+                                            </View>
+                                        </View>
+                                </View>
+
+                        </TouchableHighlight>
+                    })
+                }
+                  
                 </ScrollView>
             </View>
         )
     }
+  }
+  Videoitem.proptypes={
+    renderDat:PropTypes.array
   }
 
   const styles = StyleSheet.create({
