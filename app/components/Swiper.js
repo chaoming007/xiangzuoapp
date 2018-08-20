@@ -1,20 +1,19 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import {
-  Platform,
   StyleSheet,
+  TouchableHighlight,
   Text,
   View,
-  TextInput,
   Dimensions,
   Image
 } from 'react-native'
 
 import Swiper from 'react-native-swiper'
-import Feather from 'react-native-vector-icons/Feather'
 
-const {height, width} = Dimensions.get('window')
+const {width} = Dimensions.get('window')
 
-export default class Search extends Component {
+export default class Swiperobj extends Component {
     constructor(props, context) {
       super(props, context)
       this.state={
@@ -23,6 +22,9 @@ export default class Search extends Component {
     }
 
     render() {
+        let { picDat , navigation }=this.props
+       
+        console.log(this.props)
         return (
             <View style={styles.container}>
                 <View style={styles.imgBox}>
@@ -47,35 +49,31 @@ export default class Search extends Component {
                             marginRight: 4,
                             marginBottom: -100,
                         }}/>}
-                        
                     >
-                        <View style={styles.imgViewBox}>
-                            <Image source={require('../assets/img/b.jpg')} style={styles.imgSty}/>
-                            <View style={styles.imgTxt}>
-                                <Text style={styles.titH1}>这是标题1111</Text>
-                                <Text style={styles.titH2}>这是内容这是内容</Text>
-                            </View>
-                        </View>
-                        <View style={styles.imgViewBox}>
-                            <Image source={require('../assets/img/b.jpg')} style={styles.imgSty}/>
-                            <View style={styles.imgTxt}>
-                                <Text style={styles.titH1}>这是标题2</Text>
-                                <Text style={styles.titH2}>这是内容这是内容</Text>
-                            </View>
-                        </View>
-                        <View style={styles.imgViewBox}>
-                            <Image source={require('../assets/img/b.jpg')} style={styles.imgSty}/>
-                            <View style={styles.imgTxt}>
-                                <Text style={styles.titH1}>这是标题3</Text>
-                                <Text style={styles.titH2}>这是内容这是内容</Text>
-                            </View>
-                        </View>
+
+                        {
+                            picDat.map((item,key)=>{
+                                return   <TouchableHighlight key={key}  style={styles.touchSty} activeOpacity={1} underlayColor="transparent" onPress={ ()=>{ navigation.navigate("Newsdetail",{nid:item.id}) } }>
+                                            <View style={styles.imgViewBox} >
+                                                <Image source={{uri:item.cover }} style={styles.imgSty}/>
+                                                <View style={styles.imgTxt}>
+                                                    <Text style={styles.titH1}>{item.title}</Text>
+                                                    <Text style={styles.titH2}>{item.depict}</Text>
+                                                </View>
+                                            </View>
+                                        </TouchableHighlight>
+                            })
+                        }
                        
                     </Swiper>
                 </View>
             </View>
         )
     }
+  }
+
+  Swiperobj.propTypes = {
+    picDat: PropTypes.array
   }
 
   const styles = StyleSheet.create({

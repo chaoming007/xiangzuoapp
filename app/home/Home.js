@@ -1,14 +1,10 @@
 import React, { Component } from 'react'
 import {
-  Platform,
   StyleSheet,
   Text,
 	View,
 	ScrollView,
-	Dimensions,
-    Modal,
-    StatusBar
-} from 'react-native'
+	Dimensions} from 'react-native'
 
 import Search from '../components/Search'
 import Swiper from '../components/Swiper'
@@ -28,19 +24,19 @@ import {setSearchHistory} from '../store/Reducers'
 import {connect} from 'react-redux'
 
 import request from '../util/request'
-import config from '../util/config'
 import Loading from '../components/Loading'
 
 
 import Entypo from 'react-native-vector-icons/Entypo'
 
-const {height, width} = Dimensions.get('window')
+const {width} = Dimensions.get('window')
 
 class Home extends Component {
     constructor(props, context) {
       super(props, context)
       this.state={
-        isVisited:true
+        isVisited:true,
+        datJson:{}
       }
     }
     componentDidMount(){
@@ -48,21 +44,19 @@ class Home extends Component {
     }
 
     _requestDatFun(){           //请求数据
-       // request.get("https://mps.yiche.com/photo/v1/PhotoApi/api/v1/Style/GetCoverList?StyleIds=126313").then((dat)=>{
-        request.get("https://111.231.193.35/thor-api/app/page/home").then((dat)=>{
-            this.setState({
-                isVisited:false
-            })
-            console.log(dat)
-        }).catch((error) =>{  
-            console.log(error);  
-        })  
+        request.get("http://111.231.193.35/thor-api/app/page/home").then((dat)=>{
+            if(dat.data.errCode===0 && dat.data.errMsg==="ok"){
+                this.setState({
+                    isVisited:false,
+                    datJson:{...dat.data.data}
+                })
+            }
+        }).catch((err)=>{
+            console.log(err)
+        }) 
     }
 
-
     render() {
-
-		let {state}=this.props
 
         return (
         <View style={styles.container}>
@@ -71,24 +65,29 @@ class Home extends Component {
             <Loading isVisited={this.state.isVisited}/>
 			<ScrollView
 			showsVerticalScrollIndicator={false}
-			>
+            >
+                {/* 幻灯片 start  */}
 				<View style={styles.container}>
-					<Swiper />
-				</View>
+					<Swiper {...this.props} picDat={this.state.datJson.frames || []}  />
+                </View>
+                {/* 幻灯片 end  */}
+                
+                {/* 类别导航 start  */}
 				<View style={styles.container}>
 					<Navlist />
-				</View>
+                </View>
+                {/* 类别导航 end  */}
 
 				<View style={styles.container}>
 					{/* 视觉盛宴 start  */}
 						<View style={styles.contentBox}>
 							{/* 标题 start  */}
 								<View style={styles.titSty}>
-											<Text style={styles.titH2}>视觉盛宴</Text>
-											<View style={styles.titMore}>
-												<Text style={styles.titMoreTxt}>更多</Text>
-												<Entypo name="chevron-small-right" size={22} />
-											</View>
+                                    <Text style={styles.titH2}>视觉盛宴</Text>
+                                    <View style={styles.titMore}>
+                                        <Text style={styles.titMoreTxt}>更多</Text>
+                                        <Entypo name="chevron-small-right" size={22} />
+                                    </View>
 								</View>
 							{/* 标题 end  */}
 
