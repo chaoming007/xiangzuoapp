@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
 import {
-  Platform,
   StyleSheet,
   Text,
   View,
   Image,
-  Dimensions
+  Dimensions,
+  TouchableHighlight
 } from 'react-native'
 
-const {height, width} = Dimensions.get('window')
+const {width} = Dimensions.get('window')
 // import Feather from 'react-native-vector-icons/Feather'
 // import FontAwesome from 'react-native-vector-icons/FontAwesome'
 // import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
@@ -21,42 +21,44 @@ export default class Newsitem extends Component {
     }
 
     render() {
+        let { renderDat , navigation } = this.props
         return (
-            <View style={styles.container}>
-                <View style={styles.imgBox}>
-                    <View style={styles.imgWarp}>
-                        <Image source={require("../assets/img/123.jpg")} style={styles.imgBig} />
-                        <View style={styles.imgSileBox}>
-                            <Image source={require("../assets/img/123.jpg")} style={styles.imgSmall} />
-                            <Image source={require("../assets/img/123.jpg")} style={styles.imgSmall} />
+            
+            <TouchableHighlight 
+            onPress={()=>{navigation.navigate("Newsdetail",{id:5})}} 
+            style={styles.touchSty} 
+            activeOpacity={1} 
+            underlayColor="transparent">
+            
+                <View style={styles.container}>
+                    <View style={styles.imgBox}>
+                        <View style={styles.imgWarp}>
+                            <Image source={{uri:renderDat.cover}} style={styles.imgBig} />
                         </View>
+                    </View>
+                    <View style={styles.txtBox}>
+                        <Text style={styles.titBox} numberOfLines={2}>{renderDat.title}</Text>
+                        <View style={styles.infoBox}>
+                            <View style={styles.userBox}>
+                                <Image source={require("../assets/img/123.jpg")} style={styles.userImg} />
+                                <Text style={styles.userName}>{renderDat.authorName}</Text>
+                            </View>
+                            <View style={styles.videoInfo}>
+                                <View style={styles.scNum}>
+                                    <Image source={require("../assets/icon/liulan.png")} style={styles.ckImg} />
+                                    <Text style={styles.scNumTxt}>432434</Text>
+                                </View>
+                                <View style={styles.scNum}>
+                                    <Image source={require("../assets/icon/xh.png")} style={styles.scImg} />
+                                    <Text style={styles.scNumTxt}>4324</Text>
+                                </View>
+                            
+                            </View>
+                        </View>
+                    </View>
+                </View>
 
-                    </View>
-                    <View style={styles.numBox}>
-                       <Text style={styles.numTxt}>64+</Text>
-                    </View>
-                </View>
-                <View style={styles.txtBox}>
-                    <Text style={styles.titBox} numberOfLines={2}>11下周的汽车行汽车行情汽车行情汽车行情汽车行情汽车行情情怎么样？</Text>
-                    <View style={styles.infoBox}>
-                        <View style={styles.userBox}>
-                            <Image source={require("../assets/img/123.jpg")} style={styles.userImg} />
-                            <Text style={styles.userName}>你可开的慢名字</Text>
-                        </View>
-                        <View style={styles.videoInfo}>
-                            <View style={styles.scNum}>
-                                <Image source={require("../assets/icon/liulan.png")} style={styles.ckImg} />
-                                <Text style={styles.scNumTxt}>432434</Text>
-                            </View>
-                            <View style={styles.scNum}>
-                                <Image source={require("../assets/icon/xh.png")} style={styles.scImg} />
-                                <Text style={styles.scNumTxt}>4324</Text>
-                            </View>
-                        
-                        </View>
-                    </View>
-                </View>
-            </View>
+            </TouchableHighlight>
         )
     }
   }
@@ -106,7 +108,7 @@ export default class Newsitem extends Component {
         borderTopRightRadius: 7
     },
     imgBig:{
-        width:248,
+        width:width-32,
         height:188,
         marginRight:2
     },

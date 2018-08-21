@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import {
   Platform,
   StyleSheet,
@@ -14,7 +15,7 @@ const {height, width} = Dimensions.get('window')
 // import FontAwesome from 'react-native-vector-icons/FontAwesome'
 // import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 
-export default class Newsitem extends Component {
+export default class Listitem extends Component {
     constructor(props, context) {
       super(props, context)
       this.state={
@@ -23,8 +24,12 @@ export default class Newsitem extends Component {
 
     render() {
 
-        let {isImg,playTuff,linkUrl,navigation}=this.props
-       
+        let {isImg,playTuff,linkUrl,navigation,renderDat}=this.props
+        console.log("renderDat---",renderDat)
+        let imgUrl= renderDat?renderDat.cover:""
+        let title= renderDat?renderDat.title:""
+        let summary= renderDat?renderDat.summary:""
+        let authorName= renderDat?renderDat.authorName:""
 
         return (
             <View style={styles.container}>
@@ -41,7 +46,7 @@ export default class Newsitem extends Component {
                         <View style={styles.contentWarp}>
                             {
                                 isImg?<View style={styles.imgWarp}>
-                                    <Image source={require("../assets/img/1.png")} style={styles.imgSetSty} />
+                                    <Image source={{uri:imgUrl}} style={styles.imgSetSty} />
                                     {
                                         playTuff?<View style={styles.playSty}>
                                                     <Image source={require("../assets/icon/play.png")} style={styles.playImgSty} />
@@ -51,10 +56,8 @@ export default class Newsitem extends Component {
                             }
                         
                             <View style={isImg?[styles.txtWarpBox]:[styles.txtWarpBox,styles.txtNoImg]}>
-                                <Text style={styles.titBox} numberOfLines={2}>下周的汽车行汽车行情汽车行情汽车行情汽车行情汽车行情情怎么样？</Text>
-                                <Text style={styles.txtInfoBox}  numberOfLines={1}>
-                                下周的汽车行汽车行情汽车行情汽车行情汽车行情汽车行情情怎么样？
-                                </Text> 
+                                <Text style={styles.titBox} numberOfLines={2}>{title}</Text>
+                                <Text style={styles.txtInfoBox}  numberOfLines={1}>{summary}</Text> 
                             </View>
                         </View>
                     
@@ -69,7 +72,7 @@ export default class Newsitem extends Component {
                     <View style={styles.infoBox}>
                         <View style={styles.userBox}>
                             <Image source={require("../assets/img/123.jpg")} style={styles.userImg} />
-                            <Text style={styles.userName}>你可开的慢名字</Text>
+                            <Text style={styles.userName}>{authorName}</Text>
                         </View>
                         <View style={styles.videoInfo}>
                             <View style={styles.scNum}>
@@ -92,6 +95,13 @@ export default class Newsitem extends Component {
         )
     }
   }
+
+  Listitem.propsType={
+    isImg:PropTypes.bool,
+    linkUrl:PropTypes.string,
+    renderDat:PropTypes.object
+  }
+
 
   const styles = StyleSheet.create({
     container: {

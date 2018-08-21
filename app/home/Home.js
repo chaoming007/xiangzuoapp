@@ -26,7 +26,7 @@ import {connect} from 'react-redux'
 
 import request from '../util/request'
 import Loading from '../components/Loading'
-
+import config from '../util/config'
 
 import Entypo from 'react-native-vector-icons/Entypo'
 
@@ -38,8 +38,10 @@ class Home extends Component {
       this.state={
         isVisited:true,
         datJson:{},
-        videoFirstDat:"",   //视觉盛宴第一个数据
-        videoListDat:[]     //视觉盛宴列表
+        videoFirstDat:"",   //视觉盛宴第一条数据
+        videoListDat:[],     //视觉盛宴列表
+        newFirstDat:"",      //资讯第一条数据额
+        newListDat:[]       //资讯数据列表
       }
     }
     componentDidMount(){
@@ -47,25 +49,29 @@ class Home extends Component {
     }
 
     _requestDatFun(){           //请求数据
-        request.get("http://111.231.193.35/thor-api/app/page/home").then((dat)=>{
+        request.get(config.homeUrl).then((dat)=>{
             if(dat.data.errCode===0 && dat.data.errMsg==="ok"){
                 let data=dat.data.data
                 this.setState({
                     isVisited:false,
                     datJson:{...data}
                 })
-                this._setVideoDatFun(data)
+                this._setDatFun(data)
             }
         }).catch((err)=>{
             console.log(err)
         }) 
     }
-    _setVideoDatFun(dat){              //设置视频数据
-        let firstDat=dat.videos.slice(0,1)[0]
-        let listDat=dat.videos.slice(1)
+    _setDatFun(dat){              //设置频道渲染数据
+        let firstVideoDat=dat.videos.slice(0,1)[0]
+        let listVideoDat=dat.videos.slice(1)
+        let firstNewDat=dat.articles.slice(0,1)[0]
+        let listNewDat=dat.articles.slice(1)
         this.setState({
-            videoFirstDat:firstDat,
-            videoListDat:listDat
+            videoFirstDat:firstVideoDat,
+            videoListDat:listVideoDat,
+            newFirstDat:firstNewDat,
+            newListDat:listNewDat
         })
     }
 
@@ -105,7 +111,11 @@ class Home extends Component {
                                     </View>
                                 {/* 标题 end  */}
                              
-                                <Videoitem linkUrl={"Videodetail"} {...this.props} renderDat={this.state.videoFirstDat} />
+                                <Videoitem 
+                                playTuff={true} 
+                                linkUrl={"Videodetail"} 
+                                {...this.props} 
+                                renderDat={this.state.videoFirstDat} />
                                 
                             </View>
                     </View>
@@ -122,32 +132,45 @@ class Home extends Component {
                     
                 {/* 视觉盛宴 end */}
 
+                {/* 星座资讯 start  */}
 
 				<View style={styles.container}>
-					{/* 星座资讯 start  */}
+					
 						<View style={styles.contentBox}>
 							{/* 标题 start  */}
-								<View style={styles.titSty}>
-											<Text style={styles.titH2}>星座资讯</Text>
-											<View style={styles.titMore}>
-												<Text style={styles.titMoreTxt}>更多</Text>
-												<Entypo name="chevron-small-right" size={22} />
-											</View>
-								</View>
+                            <View style={styles.titSty}>
+                                <Text style={styles.titH2}>星座资讯</Text>
+                                <View style={styles.titMore}>
+                                    <Text style={styles.titMoreTxt}>更多</Text>
+                                    <Entypo name="chevron-small-right" size={22} />
+                                </View>
+                            </View>
 							{/* 标题 end  */}
-							<Newsitem />
-
-							<View>
-								<Listitem />
-								<Listitem isImg={true} />
+							<Newsitem {...this.props} renderDat={this.state.newFirstDat} />
+                            <View>
+                                {
+                                    this.state.newListDat.map((item,key)=>{
+                                        return <Listitem 
+                                                linkUrl={"Newsdetail"} 
+                                                renderDat={item} 
+                                                {...this.props} 
+                                                isImg={true} 
+                                                key={key} />
+                                    })
+                                }
 							</View>
 
 						</View>
-					{/* 星座资讯 end */}
-				</View>
-				<View style={styles.container}>
-					<Userlist />
-				</View>
+                </View>
+
+                {/*
+                    <View style={styles.container}>
+                        <Userlist />
+                    </View>
+                */}
+
+                {/* 星座资讯 end */}
+
 
 
 				<View style={styles.container}>
