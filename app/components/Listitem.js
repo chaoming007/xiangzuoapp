@@ -25,7 +25,6 @@ export default class Listitem extends Component {
     render() {
 
         let {isImg,playTuff,linkUrl,navigation,renderDat}=this.props
-        console.log("renderDat---",renderDat)
         let imgUrl= renderDat?renderDat.cover:""
         let title= renderDat?renderDat.title:""
         let summary= renderDat?renderDat.summary:""
@@ -124,7 +123,7 @@ export default class Listitem extends Component {
     },
     imgWarp:{
         width:130,
-        height:130,
+        
         overflow: 'hidden'
     },
     playSty:{
@@ -146,11 +145,11 @@ export default class Listitem extends Component {
     },
     imgSetSty:{
         width:130,
-        height:130
+        height:78.8
     },
     txtWarpBox:{
         flex:1,
-        marginTop: 20,
+        marginTop: 0,
         marginRight:16,
         marginLeft:16,
         paddingBottom:10,
@@ -171,8 +170,7 @@ export default class Listitem extends Component {
     titBox:{
         fontSize: 18,
         lineHeight:25,
-        fontWeight:"bold",
-        marginBottom: 10
+        fontWeight:"bold"
         //textAlign:"left",
         //flex:1
     },

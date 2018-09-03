@@ -22,151 +22,47 @@ export default class Videoitem extends Component {
     }
 
     render() {
+        let renderDat=this.props.renderDat
+
         return (
             <View style={styles.container}>
                 <ScrollView 
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
                 >
-                    <View style={[styles.contentBox,styles.contentFirst]}>
-                            <Image source={require("../assets/img/4.jpg")} style={styles.imgBgSty} />
-                            <View style={styles.infoBox}>
-                                <View style={styles.v1Box}>
-                                    <View style={[styles.txtBoxWarp,styles.b1]}>
-                                        <Text style={styles.txtSty} numberOfLines={1} >雷克萨斯怎么样，雷克萨样？</Text>
-                                    </View>
-                                    <Image source={require("../assets/img/a.jpg")} style={styles.userImg} />
-                                </View>
-                                <View style={styles.v1Box}>
-                                    <View style={[styles.txtBoxWarp,styles.b2]}>
-                                        <Text style={styles.txtSty} numberOfLines={2}>雷克萨斯怎么样，雷克萨样？雷克萨斯怎么样雷克萨斯怎么样</Text>
-                                    </View>
-                                    <Image source={require("../assets/img/b.jpg")} style={styles.userImg} />
-                                </View>
-                                <View style={styles.v1Box}>
-                                    <View style={[styles.txtBoxWarp,styles.b3]}>
-                                        <Text style={styles.txtSty} numberOfLines={1}>雷克萨斯怎么样？</Text>
-                                    </View>
-                                    <Image source={require("../assets/img/c.jpg")} style={styles.userImg} />
-                                </View>
-                                <Text style={styles.titMsg} numberOfLines={2}>
-                                    雷克萨斯怎么样雷克萨，斯怎么样雷克萨斯怎么样斯怎么样雷克萨斯怎么样斯怎么样雷克萨斯怎么样
-                                </Text>
-                            </View>
-                    </View>
 
+                {
+                    renderDat.map((item,key)=>{
 
-                    <View style={styles.contentBox}>
-                            <Image source={require("../assets/img/4.jpg")} style={styles.imgBgSty} />
-                            <View style={styles.infoBox}>
-                                <View style={styles.v1Box}>
-                                    <View style={[styles.txtBoxWarp,styles.b1]}>
-                                        <Text style={styles.txtSty} numberOfLines={1}>雷克萨斯怎么样，雷克萨样？</Text>
+                        return  <View style={[styles.contentBox,key===0?styles.contentFirst:""]} key={key}>
+                                    <Image source={{uri:item.cover}} style={styles.imgBgSty} />
+                                    <View style={styles.infoBox}>
+                                        <View style={styles.v1Box}>
+                                            <View style={[styles.txtBoxWarp,styles.b1]}>
+                                                <Text style={styles.txtSty} numberOfLines={1} >雷克萨斯怎么样，雷克萨样？</Text>
+                                            </View>
+                                            <Image source={require("../assets/img/a.jpg")} style={styles.userImg} />
+                                        </View>
+                                        
+                                        <View style={styles.v1Box}>
+                                            <View style={[styles.txtBoxWarp,styles.b2]}>
+                                                <Text style={styles.txtSty} numberOfLines={2}>雷克萨斯怎么样，雷克萨样？雷克萨斯怎么样雷克萨斯怎么样</Text>
+                                            </View>
+                                            <Image source={require("../assets/img/b.jpg")} style={styles.userImg} />
+                                        </View>
+                                        <View style={styles.v1Box}>
+                                            <View style={[styles.txtBoxWarp,styles.b3]}>
+                                                <Text style={styles.txtSty} numberOfLines={1}>雷克萨斯怎么样？</Text>
+                                            </View>
+                                            <Image source={require("../assets/img/c.jpg")} style={styles.userImg} />
+                                        </View>
+                                        <Text style={styles.titMsg} numberOfLines={2}>
+                                            {item.title}
+                                        </Text>
                                     </View>
-                                    <Image source={require("../assets/img/a.jpg")} style={styles.userImg} />
                                 </View>
-                                <View style={styles.v1Box}>
-                                    <View style={[styles.txtBoxWarp,styles.b2]}>
-                                        <Text style={styles.txtSty} numberOfLines={2}>雷克萨斯怎么样，雷克萨样？雷克萨斯怎么样雷克萨斯怎么样</Text>
-                                    </View>
-                                    <Image source={require("../assets/img/b.jpg")} style={styles.userImg} />
-                                </View>
-                                <View style={styles.v1Box}>
-                                    <View style={[styles.txtBoxWarp,styles.b3]}>
-                                        <Text style={styles.txtSty} numberOfLines={1}>雷克萨斯怎么样？</Text>
-                                    </View>
-                                    <Image source={require("../assets/img/c.jpg")} style={styles.userImg} />
-                                </View>
-                                <Text style={styles.titMsg} numberOfLines={2}>
-                                    雷克萨斯怎么样雷克萨，斯怎么样雷克萨斯怎么样斯怎么样雷克萨斯怎么样斯怎么样雷克萨斯怎么样
-                                </Text>
-                            </View>
-                    </View>
-
-
-                    <View style={styles.contentBox}>
-                            <Image source={require("../assets/img/4.jpg")} style={styles.imgBgSty} />
-                            <View style={styles.infoBox}>
-                                <View style={styles.v1Box}>
-                                    <View style={[styles.txtBoxWarp,styles.b1]}>
-                                        <Text style={styles.txtSty} numberOfLines={1}>雷克萨斯怎么样，雷克萨样？</Text>
-                                    </View>
-                                    <Image source={require("../assets/img/a.jpg")} style={styles.userImg} />
-                                </View>
-                                <View style={styles.v1Box}>
-                                    <View style={[styles.txtBoxWarp,styles.b2]}>
-                                        <Text style={styles.txtSty} numberOfLines={2}>雷克萨斯怎么样，雷克萨样？雷克萨斯怎么样雷克萨斯怎么样</Text>
-                                    </View>
-                                    <Image source={require("../assets/img/b.jpg")} style={styles.userImg} />
-                                </View>
-                                <View style={styles.v1Box}>
-                                    <View style={[styles.txtBoxWarp,styles.b3]}>
-                                        <Text style={styles.txtSty} numberOfLines={1}>雷克萨斯怎么样？</Text>
-                                    </View>
-                                    <Image source={require("../assets/img/c.jpg")} style={styles.userImg} />
-                                </View>
-                                <Text style={styles.titMsg} numberOfLines={2}>
-                                    雷克萨斯怎么样雷克萨，斯怎么样雷克萨斯怎么样斯怎么样雷克萨斯怎么样斯怎么样雷克萨斯怎么样
-                                </Text>
-                            </View>
-                    </View>
-
-
-                    <View style={styles.contentBox}>
-                    <Image source={require("../assets/img/4.jpg")} style={styles.imgBgSty} />
-                    <View style={styles.infoBox}>
-                        <View style={styles.v1Box}>
-                            <View style={[styles.txtBoxWarp,styles.b1]}>
-                                <Text style={styles.txtSty} numberOfLines={1}>雷克萨斯怎么样，雷克萨样？</Text>
-                            </View>
-                            <Image source={require("../assets/img/a.jpg")} style={styles.userImg} />
-                        </View>
-                        <View style={styles.v1Box}>
-                            <View style={[styles.txtBoxWarp,styles.b2]}>
-                                <Text style={styles.txtSty} numberOfLines={2}>雷克萨斯怎么样，雷克萨样？雷克萨斯怎么样雷克萨斯怎么样</Text>
-                            </View>
-                            <Image source={require("../assets/img/b.jpg")} style={styles.userImg} />
-                        </View>
-                        <View style={styles.v1Box}>
-                            <View style={[styles.txtBoxWarp,styles.b3]}>
-                                <Text style={styles.txtSty} numberOfLines={1}>雷克萨斯怎么样？</Text>
-                            </View>
-                            <Image source={require("../assets/img/c.jpg")} style={styles.userImg} />
-                        </View>
-                        <Text style={styles.titMsg} numberOfLines={2}>
-                            雷克萨斯怎么样雷克萨，斯怎么样雷克萨斯怎么样斯怎么样雷克萨斯怎么样斯怎么样雷克萨斯怎么样
-                        </Text>
-                    </View>
-            </View>
-
-
-            <View style={styles.contentBox}>
-            <Image source={require("../assets/img/4.jpg")} style={styles.imgBgSty} />
-            <View style={styles.infoBox}>
-                <View style={styles.v1Box}>
-                    <View style={[styles.txtBoxWarp,styles.b1]}>
-                        <Text style={styles.txtSty} numberOfLines={1}>雷克萨斯怎么样，雷克萨样？</Text>
-                    </View>
-                    <Image source={require("../assets/img/a.jpg")} style={styles.userImg} />
-                </View>
-                <View style={styles.v1Box}>
-                    <View style={[styles.txtBoxWarp,styles.b2]}>
-                        <Text style={styles.txtSty} numberOfLines={2}>雷克萨斯怎么样，雷克萨样？雷克萨斯怎么样雷克萨斯怎么样</Text>
-                    </View>
-                    <Image source={require("../assets/img/b.jpg")} style={styles.userImg} />
-                </View>
-                <View style={styles.v1Box}>
-                    <View style={[styles.txtBoxWarp,styles.b3]}>
-                        <Text style={styles.txtSty} numberOfLines={1}>雷克萨斯怎么样？</Text>
-                    </View>
-                    <Image source={require("../assets/img/c.jpg")} style={styles.userImg} />
-                </View>
-                <Text style={styles.titMsg} numberOfLines={2}>
-                    雷克萨斯怎么样雷克萨，斯怎么样雷克萨斯怎么样斯怎么样雷克萨斯怎么样斯怎么样雷克萨斯怎么样
-                </Text>
-            </View>
-    </View>
-
+                        })
+                }
 
 
                 </ScrollView>

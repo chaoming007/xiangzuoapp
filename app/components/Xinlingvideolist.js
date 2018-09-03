@@ -19,97 +19,35 @@ export default class Xinlingvideolist extends Component {
     }
 
     render() {
+        let renderDat=this.props.renderDat
         return (
             <View style={styles.container}>
                 <ScrollView 
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
                 >
-                    <View style={[styles.itemBox,styles.itemFirst]}>
-                        <Image source={require("../assets/img/4.jpg")} style={styles.itemBgImg} />
-                        <View style={styles.itemContent}>
-                            <Text style={styles.txtBox} numberOfLines={2}>
-                                上海大众是一个好汽车，上海大众是一个好汽车上海大众是一个好汽车
-                            </Text>
-                            <View style={styles.userBox}>
-                                <Image source={require("../assets/img/1.png")} style={styles.userImg} />
-                                <Text style={styles.userName}>巴拉巴小魔仙</Text>
-                            </View>
-                        </View>
-                        <View style={styles.playBox}>
-                            <Image source={require("../assets/icon/playnum.png")} style={styles.playIcon} />
-                            <Text style={styles.playTxt}>343545</Text>
-                        </View>
-                    </View>
-                    <View style={[styles.itemBox]}>
-                        <Image source={require("../assets/img/4.jpg")} style={styles.itemBgImg} />
-                        <View style={styles.itemContent}>
-                            <Text style={styles.txtBox} numberOfLines={2}>
-                                上海大众是一个好汽车，上海大众是一个好汽车上海大众是一个好汽车
-                            </Text>
-                            <View style={styles.userBox}>
-                                <Image source={require("../assets/img/1.png")} style={styles.userImg} />
-                                <Text style={styles.userName}>巴拉巴小魔仙</Text>
-                            </View>
-                        </View>
-                        <View style={styles.playBox}>
-                            <Image source={require("../assets/icon/playnum.png")} style={styles.playIcon} />
-                            <Text style={styles.playTxt}>343545</Text>
-                        </View>
-                    </View>
-                    <View style={[styles.itemBox]}>
-                        <Image source={require("../assets/img/4.jpg")} style={styles.itemBgImg} />
-                        <View style={styles.itemContent}>
-                            <Text style={styles.txtBox} numberOfLines={2}>
-                                上海大众是一个好汽车，上海大众是一个好汽车上海大众是一个好汽车
-                            </Text>
-                            <View style={styles.userBox}>
-                                <Image source={require("../assets/img/1.png")} style={styles.userImg} />
-                                <Text style={styles.userName}>巴拉巴小魔仙</Text>
-                            </View>
-                        </View>
-                        <View style={styles.playBox}>
-                            <Image source={require("../assets/icon/playnum.png")} style={styles.playIcon} />
-                            <Text style={styles.playTxt}>343545</Text>
-                        </View>
-                    </View>
-                    <View style={[styles.itemBox]}>
-                        <Image source={require("../assets/img/4.jpg")} style={styles.itemBgImg} />
-                        <View style={styles.itemContent}>
-                            <Text style={styles.txtBox} numberOfLines={2}>
-                                上海大众是一个好汽车，上海大众是一个好汽车上海大众是一个好汽车
-                            </Text>
-                            <View style={styles.userBox}>
-                                <Image source={require("../assets/img/1.png")} style={styles.userImg} />
-                                <Text style={styles.userName}>巴拉巴小魔仙</Text>
-                            </View>
-                        </View>
-                        <View style={styles.playBox}>
-                            <Image source={require("../assets/icon/playnum.png")} style={styles.playIcon} />
-                            <Text style={styles.playTxt}>343545</Text>
-                        </View>
-                    </View>
-                    <View style={[styles.itemBox]}>
-                        <Image source={require("../assets/img/4.jpg")} style={styles.itemBgImg} />
-                        <View style={styles.itemContent}>
-                            <Text style={styles.txtBox} numberOfLines={2}>
-                                上海大众是一个好汽车，上海大众是一个好汽车上海大众是一个好汽车
-                            </Text>
-                            <View style={styles.userBox}>
-                                <Image source={require("../assets/img/1.png")} style={styles.userImg} />
-                                <Text style={styles.userName}>巴拉巴小魔仙</Text>
-                            </View>
-                        </View>
-                        <View style={styles.playBox}>
-                            <Image source={require("../assets/icon/playnum.png")} style={styles.playIcon} />
-                            <Text style={styles.playTxt}>343545</Text>
-                        </View>
-                    </View>
 
+                {
+                    renderDat.map((item,key)=>{
 
-
-
-                   
+                        return  <View style={[styles.itemBox,key===0?styles.itemFirst:""]} key={key}>
+                                    <Image source={{uri:item.cover}} style={styles.itemBgImg} />
+                                    <View style={styles.itemContent}>
+                                        <Text style={styles.txtBox} numberOfLines={2}>
+                                            {item.title}
+                                        </Text>
+                                        <View style={styles.userBox}>
+                                            <Image source={{uri:item.author.portrait}} style={styles.userImg} />
+                                            <Text style={styles.userName}>{item.author.name}</Text>
+                                        </View>
+                                    </View>
+                                    <View style={styles.playBox}>
+                                        <Image source={require("../assets/icon/playnum.png")} style={styles.playIcon} />
+                                        <Text style={styles.playTxt}>343545</Text>
+                                    </View>
+                                </View>
+                    })
+                }
 
                 </ScrollView>
             </View>

@@ -5,6 +5,7 @@ import {
     View,
     TouchableHighlight,
     ScrollView,
+    RefreshControl,
     Dimensions} from 'react-native'
 
 import Search from '../components/Search'
@@ -37,11 +38,13 @@ class Home extends Component {
       super(props, context)
       this.state={
         isVisited:true,
+        refreshing: false,
         datJson:{},
         videoFirstDat:"",   //视觉盛宴第一条数据
         videoListDat:[],     //视觉盛宴列表
         newFirstDat:"",      //资讯第一条数据额
-        newListDat:[]       //资讯数据列表
+        newListDat:[],       //资讯数据列表
+        audioListDat:[]      //声音数据列表
       }
     }
     componentDidMount(){
@@ -50,10 +53,12 @@ class Home extends Component {
 
     _requestDatFun(){           //请求数据
         request.get(config.homeUrl).then((dat)=>{
-            if(dat.data.errCode===0 && dat.data.errMsg==="ok"){
+            console.log("首页数据：",dat)
+            if(dat.data.errCode===0 && dat.data.errMsg==="成功"){
                 let data=dat.data.data
                 this.setState({
                     isVisited:false,
+                    refreshing: false,
                     datJson:{...data}
                 })
                 this._setDatFun(data)
@@ -67,12 +72,19 @@ class Home extends Component {
         let listVideoDat=dat.videos.slice(1)
         let firstNewDat=dat.articles.slice(0,1)[0]
         let listNewDat=dat.articles.slice(1)
+        let audioListDat=[...dat.audios]
         this.setState({
             videoFirstDat:firstVideoDat,
             videoListDat:listVideoDat,
             newFirstDat:firstNewDat,
-            newListDat:listNewDat
+            newListDat:listNewDat,
+            audioListDat:[...audioListDat]
         })
+    }
+
+    _onRefresh(){       //下拉刷新
+        this.setState({refreshing: true})
+        this._requestDatFun()
     }
 
     render() {
@@ -81,7 +93,14 @@ class Home extends Component {
             <Statusbar  />
             <Search {...this.props} />
             <Loading isVisited={this.state.isVisited}/>
-			<ScrollView
+            <ScrollView
+            refreshControl={
+                <RefreshControl
+                  refreshing={this.state.refreshing}
+                  title={"下拉刷新"}
+                  onRefresh={()=>{ this._onRefresh() }}
+                />
+            }
 			showsVerticalScrollIndicator={false}
             >
                 {/* 幻灯片 start  */}
@@ -172,38 +191,36 @@ class Home extends Component {
                 {/* 星座资讯 end */}
 
 
+                {/* 聆听心灵 start  */}
 
-				<View style={styles.container}>
+                <View style={styles.container}>
+                
+                    {/* 标题 start  */}
+                        <View style={styles.titSty}>
+                            <Text style={styles.titH2}>聆听心灵</Text>
+                            <View style={styles.titMore}>
+                                <Text style={styles.titMoreTxt}>更多</Text>
+                                <Entypo name="chevron-small-right" size={22} />
+                            </View>
+                        </View>
+                    {/* 标题 end  */}
+                    {/* <Xinglinglist renderDat={this.state.audioListDat} /> */}
+                </View>
+                
+                {/* 聆听心灵 end */}
 
-					{/* 聆听心灵 start  */}
-
-							{/* 标题 start  */}
-								<View style={styles.titSty}>
-											<Text style={styles.titH2}>聆听心灵</Text>
-											<View style={styles.titMore}>
-												<Text style={styles.titMoreTxt}>更多</Text>
-												<Entypo name="chevron-small-right" size={22} />
-											</View>
-								</View>
-							{/* 标题 end  */}
-
-							<Xinglinglist />
-
-					{/* 聆听心灵 end */}
-
-				</View>
-
-				<View style={styles.container}>
-					<Xinlingvideolist />
-					<Footline />
-				</View>
+                <View style={styles.container}>
+                    <Xinlingvideolist renderDat={this.state.audioListDat} />
+                    <Footline />
+                </View>
+                
 
 			</ScrollView>
 
 			{/*搜索历史 start*/}
 				<Historypagemodel />
-
-			{/*搜索历史 end */}
+            {/*搜索历史 end */}
+            
 
 		</View>
         )
