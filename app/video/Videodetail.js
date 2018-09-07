@@ -19,18 +19,42 @@ const {height, width} = Dimensions.get('window')
 import Guanzhuitem from '../components/Guanzhuitem'
 import Listitem from '../components/Listitem'
 import Statusbar from '../components/Statusbar'
+import Video from '../components/Videoplay'
+
+import request from '../util/request'
+import config from '../util/config'
 
 class Videodetail extends Component {
     constructor(props, context) {
         super(props, context)
         this.state={
-        
+            contentDat:"",
+            authorDat:""
         }
     }
-  
+    componentDidMount() {
+        this._requestDatFun()
+    }
+
+    _requestDatFun(){  
+        let id=this.props.navigation.state.params.id
+        let url=config.contentUrl.replace(/\{0\}/gi,id)              //数据请求
+        request.get(url).then((dat)=>{
+            if(dat.data.errCode===0 && dat.data.errMsg==="成功"){
+                let data=dat.data.data
+                console.log("视频数据",data)
+                this.setState({
+                    contentDat:{...data},
+                    authorDat:{...data.author}
+                })
+            }
+        }).catch((err)=>{
+            console.log(err)
+        }) 
+    }
+
     render() {
         let {navigation}=this.props
-
         return (
             <View style={styles.container}>
                 <Statusbar barTuff="black" />
@@ -40,7 +64,7 @@ class Videodetail extends Component {
                 stickyHeaderIndices={[0]}
                 >
                     <View style={styles.videoBox}>
-                        <Image source={require("../assets/img/1.png")} style={styles.videoImg} />
+                        <Video videoUrl={this.state.contentDat.resourceUrl} />
                         <View style={styles.backBtn}>
                             <Ionicons onPress={()=>{ navigation.goBack() }} name="md-arrow-back" size={25} color="#ffffff" />
                         </View>
@@ -48,17 +72,17 @@ class Videodetail extends Component {
 
                     <View style={styles.mainBox}>
                         <View style={styles.titBox}>
-                            <Text style={styles.titTxt}>大众汽车的质量怎么样呀？请大家评测一下，众汽车的质量怎么样呀</Text>
+                            <Text style={styles.titTxt}>{this.state.contentDat.title}</Text>
                         </View>
                         <View style={styles.contentBox}>
                             <Text style={styles.contentTxt}>
-                            请大家评测一下，大众汽车的质量怎么样呀大众汽车的质量怎么样呀!请大家评测一下，大众汽车的质量怎么样呀大众汽车的质量怎么样呀请大家评测一下，大众汽车的质量怎么样呀大众汽车的质量怎么样呀请大家评测一下，大众汽车的质量怎么样呀大众汽车的质量怎么样呀请大家评测一下，大众汽车的质量怎么样呀大众汽车的质量怎么样呀请大家评测一下，大众汽车的质量怎么样呀大众汽车的质量怎么样呀
+                            {this.state.contentDat.content}
                             </Text>
                         </View>
                     </View>
 
                     <View style={styles.gzWarp}>
-                        <Guanzhuitem />
+                        <Guanzhuitem renderDat={this.state.authorDat} />
                     </View>
 
                     {/* 订阅内容 start  */}

@@ -19,17 +19,28 @@ export default class Videoitem extends Component {
     constructor(props, context) {
       super(props, context)
       this.state={
+          defaultReaderDat:{
+              id:0,
+              cover:"",
+              title:"这是默认标题",
+              author:{
+                name:"这是默认名字",
+                portrait:""
+              }
+          }
       }
     }
 
     render() {
 
-        let { navigation, playTuff,linkUrl,renderDat }=this.props    
+        let { navigation, playTuff,linkUrl,renderDat }=this.props
+        renderDat=renderDat?renderDat:this.state.defaultReaderDat
+
         return (
             <View style={styles.container}>
 
                 <TouchableHighlight 
-                onPress={()=>{navigation.navigate(linkUrl,{id:5})}} 
+                onPress={()=>{navigation.navigate(linkUrl,{id:renderDat.id})}} 
                 style={styles.touchSty} 
                 activeOpacity={1} 
                 underlayColor="transparent">
@@ -47,8 +58,8 @@ export default class Videoitem extends Component {
                     <Text style={styles.titBox}>{renderDat.title}</Text>
                     <View style={styles.infoBox}>
                         <View style={styles.userBox}>
-                            <Image source={require("../assets/img/123.jpg")} style={styles.userImg} />
-                            <Text style={styles.userName}>{renderDat.authorName}</Text>
+                            <Image source={{uri:renderDat.author.portrait}} style={styles.userImg} />
+                            <Text style={styles.userName}>{renderDat.author.name}</Text>
                         </View>
                         <View style={styles.videoInfo}>
                             <View style={styles.scNum}>

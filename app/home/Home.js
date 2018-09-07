@@ -3,21 +3,16 @@ import {
     StyleSheet,
     Text,
     View,
-    TouchableHighlight,
     ScrollView,
     RefreshControl,
     Dimensions} from 'react-native'
 
 import Search from '../components/Search'
 import Swiper from '../components/Swiper'
-import Navlist from '../components/Navlist'
 import Videoitem from '../components/videoItem'
 import Scrollvideo from '../components/scrollVideo'
-import Scrolllabel from '../components/Scrolllabel'
 import Newsitem from '../components/Newsitem'
 import Listitem from '../components/Listitem'
-import Userlist from '../components/Userlist'
-import Xinglinglist from '../components/Xinlinglist'
 import Xinlingvideolist from '../components/Xinlingvideolist'
 import Footline from '../components/Footline'
 import Historypagemodel from '../page/Historypagemodel'
@@ -68,12 +63,12 @@ class Home extends Component {
         }) 
     }
     _setDatFun(dat){              //设置频道渲染数据
-        let firstVideoDat=dat.videos.slice(0,1)[0]
+        let firstVideoDat=dat.videos.slice(0,1)[0]   //视频
         let listVideoDat=dat.videos.slice(1)
-        let firstNewDat=dat.articles.slice(0,1)[0]
+        let firstNewDat=dat.articles.slice(0,1)[0]  //资讯
         let listNewDat=dat.articles.slice(1)
-        let audioListDat=[...dat.audios]
-        this.setState({
+        let audioListDat=[...dat.audios]            //音频
+        this.setState({ 
             videoFirstDat:firstVideoDat,
             videoListDat:listVideoDat,
             newFirstDat:firstNewDat,
@@ -151,6 +146,8 @@ class Home extends Component {
                     
                 {/* 视觉盛宴 end */}
 
+                
+
                 {/* 星座资讯 start  */}
 
 				<View style={styles.container}>
@@ -164,8 +161,14 @@ class Home extends Component {
                                     <Entypo name="chevron-small-right" size={22} />
                                 </View>
                             </View>
-							{/* 标题 end  */}
-							<Newsitem {...this.props} renderDat={this.state.newFirstDat} />
+                            {/* 标题 end  */}
+
+                            <Videoitem 
+                            {...this.props} 
+                            renderDat={this.state.newFirstDat} 
+                            linkUrl={"Newsdetail"} 
+                            playTuff={false} 
+                            />
                             <View>
                                 {
                                     this.state.newListDat.map((item,key)=>{

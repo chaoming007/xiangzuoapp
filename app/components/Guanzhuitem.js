@@ -22,13 +22,13 @@ export default class Guanzhuitem extends Component {
     }
   
     render() {
-        let {styTuff}=this.props
+        let {styTuff,renderDat}=this.props
         return (
             <View style={styles.container}>
                 <View style={styles.gzBox}>
-                    <Image source={require("../assets/img/1.png")} style={styles.gzUserImg} />
+                    <Image source={{uri:renderDat.portrait}} style={styles.gzUserImg} />
                     <View style={styles.gzInfoBox}>
-                        <Text style={styles.nameTxt}>我是汽车爱好者</Text>
+                        <Text style={styles.nameTxt}>{renderDat.name}</Text>
                         <Text style={styles.timeTxt}>发布时间：2012.06.15</Text>
                     </View>
                     {

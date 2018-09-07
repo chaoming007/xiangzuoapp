@@ -50,8 +50,8 @@ export default class Videoitem extends Component {
                                                 {item.title}
                                             </Text>
                                             <View style={styles.userBox}>
-                                                {/*<Image source={require("../assets/img/1.png")} style={styles.userImg} />*/}
-                                                <Text style={styles.userName}>{item.authorName}</Text>
+                                                <Image source={{uri:item.author.portrait}} style={styles.userImg} />
+                                                <Text style={styles.userName}>{item.author.name}</Text>
                                             </View>
                                         </View>
                                 </View>

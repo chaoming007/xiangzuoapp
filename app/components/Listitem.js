@@ -19,33 +19,40 @@ export default class Listitem extends Component {
     constructor(props, context) {
       super(props, context)
       this.state={
+        defaultReaderDat:{
+            id:0,
+            cover:"",
+            title:"这是默认标题",
+            author:{
+              name:"这是默认名字",
+              portrait:""
+            }
+        }
       }
     }
 
     render() {
 
         let {isImg,playTuff,linkUrl,navigation,renderDat}=this.props
-        let imgUrl= renderDat?renderDat.cover:""
-        let title= renderDat?renderDat.title:""
-        let summary= renderDat?renderDat.summary:""
-        let authorName= renderDat?renderDat.authorName:""
+
+        renderDat=renderDat?renderDat:this.state.defaultReaderDat
 
         return (
             <View style={styles.container}>
                 
                 <View style={isImg?[styles.txtBox]:[styles.txtBox,styles.txtSetP]}>
                    
-                    {/* 图文信息 start */}
+                    {/* 图文信息 start */} 
 
                     <TouchableHighlight 
-                    onPress={()=>{navigation.navigate(linkUrl,{id:5})}}
+                    onPress={()=>{navigation.navigate(linkUrl,{id:renderDat.id})}}
                     activeOpacity={1} 
                     underlayColor="transparent">
 
                         <View style={styles.contentWarp}>
                             {
                                 isImg?<View style={styles.imgWarp}>
-                                    <Image source={{uri:imgUrl}} style={styles.imgSetSty} />
+                                    <Image source={{uri:renderDat.cover}} style={styles.imgSetSty} />
                                     {
                                         playTuff?<View style={styles.playSty}>
                                                     <Image source={require("../assets/icon/play.png")} style={styles.playImgSty} />
@@ -55,8 +62,8 @@ export default class Listitem extends Component {
                             }
                         
                             <View style={isImg?[styles.txtWarpBox]:[styles.txtWarpBox,styles.txtNoImg]}>
-                                <Text style={styles.titBox} numberOfLines={2}>{title}</Text>
-                                <Text style={styles.txtInfoBox}  numberOfLines={1}>{summary}</Text> 
+                                <Text style={styles.titBox} numberOfLines={2}>{renderDat.title}</Text>
+                                <Text style={styles.txtInfoBox}  numberOfLines={1}>{renderDat.summary}</Text> 
                             </View>
                         </View>
                     
@@ -70,8 +77,8 @@ export default class Listitem extends Component {
 
                     <View style={styles.infoBox}>
                         <View style={styles.userBox}>
-                            <Image source={require("../assets/img/123.jpg")} style={styles.userImg} />
-                            <Text style={styles.userName}>{authorName}</Text>
+                            <Image source={{uri:renderDat.author.portrait}} style={styles.userImg} />
+                            <Text style={styles.userName}>{renderDat.author.name}</Text>
                         </View>
                         <View style={styles.videoInfo}>
                             <View style={styles.scNum}>
@@ -145,7 +152,7 @@ export default class Listitem extends Component {
     },
     imgSetSty:{
         width:130,
-        height:78.8
+        height:130
     },
     txtWarpBox:{
         flex:1,
@@ -170,7 +177,9 @@ export default class Listitem extends Component {
     titBox:{
         fontSize: 18,
         lineHeight:25,
-        fontWeight:"bold"
+        fontWeight:"bold",
+        marginTop:10,
+        marginBottom:20
         //textAlign:"left",
         //flex:1
     },
