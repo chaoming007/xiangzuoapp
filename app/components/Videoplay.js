@@ -4,17 +4,17 @@ import {
     View,
     Text,
     TouchableHighlight,
+    PanResponder,
     Dimensions} from 'react-native'
 
 import Video from 'react-native-video'
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
+import Octicons from 'react-native-vector-icons/Octicons'
 import Spinkit from 'react-native-spinkit'
 import { timeFormat } from '../util/tools'
 
 const {width} = Dimensions.get('window')
-
-
 
 export default class Videoplay extends Component {
     constructor(props, context) {
@@ -24,7 +24,7 @@ export default class Videoplay extends Component {
             iconName:"play",    //播放图标
             volume:1,           //声音
             rate:1.0,            //默认速率
-            updateTim:100,      //播放中更新时间  默认250ms
+            updateTim:50,      //播放中更新时间  默认250ms
             muted:false,        //是否静音
             repeat:false,       //是否重复
             resizeMode:"contain", //播放器展示形式
@@ -40,7 +40,15 @@ export default class Videoplay extends Component {
             currentMinProgressWidth:0,   //当前次进度条的长度
             repeatTuff:false,        //重播控制
             timer:null,
-            controlTuff:true        //控制面板是否显示 
+            controlTuff:true,        //控制面板是否显示 
+            isVideoEnd:false,        //视频是否播放完毕
+            moveLeftNum:0,             //拖拽的距离
+            moveTimeNum:0,              //拖拽的时间
+            mouseX:0,                    //手指点击相对于相应元素边界的
+            mouseDownWidth:0,            //当手指按下时候获取进度条宽度
+            isBeginProgress:true,        //是否允许进度条显示相应进度
+            timc:3000,                  //控制条隐藏时间
+            allTim:0                    //没特殊处理过的总时间
         }
     }
     componentDidMount() {
@@ -68,26 +76,37 @@ export default class Videoplay extends Component {
         this.setState({
             isLoad:false,
             currentTime:timeFormat(item.currentTime),
-            totalTime:timeFormat(item.duration)
+            totalTime:timeFormat(item.duration),
+            allTim:item.duration
         })
     }
-    _setTimeFun(item){      // 进度控制，每250ms调用一次，以获取视频播放的进度
+    _setTimeFun(item){      // 进度控制，默认每250ms调用一次，以获取视频播放的进度
         let cTim=timeFormat(item.currentTime)
         let bigW=0,samllW=0
         bigW=item.currentTime*this.state.mainProgressWidth/item.playableDuration
         samllW=item.currentTime*this.state.minProgressWidth/item.playableDuration
-        this.setState({
-            currentTime:cTim,
-            currentProgressWidth:bigW,
-            currentMinProgressWidth:samllW
-        })
+        if(this.state.isBeginProgress){
+            this.setState({
+                currentTime:cTim,
+                currentProgressWidth:bigW,
+                currentMinProgressWidth:samllW
+            })
+        }else{
+            this.setState({
+                currentTime:cTim,
+                currentMinProgressWidth:samllW
+            })
+        }
     }
     _onEndFun(item){            // 当视频播放完毕后的回调函数
-        console.log("播放完毕：")
+        console.log("播放完毕")
+        this.timer && clearTimeout(this.timer)
         this.setState({
             isPlay:true,
             iconName:"play",
             repeatTuff:true,
+            isVideoEnd:true,
+            controlTuff:true,
             currentProgressWidth:this.state.mainProgressWidth,
             currentMinProgressWidth:this.state.minProgressWidth
         })
@@ -98,10 +117,13 @@ export default class Videoplay extends Component {
             this.setState({
                 controlTuff:false
             })
-        },3000)
+        },this.state.timc)
     }
     _videoClickFun(){          //点击视频显示或隐藏控制条
         let bTuff=true
+        if(this.state.isVideoEnd){
+            return
+        }
         if(this.state.controlTuff){
             bTuff=false
         }
@@ -125,7 +147,8 @@ export default class Videoplay extends Component {
             repeatTuff:false,
             currentProgressWidth:0,
             currentMinProgressWidth:0,
-            controlTuff:true
+            controlTuff:true,
+            isVideoEnd:false
         })
         this._timeControlFun()
     }
@@ -145,16 +168,53 @@ export default class Videoplay extends Component {
         })
     }
 
+    _panResponder = PanResponder.create({           //拖拽进度条
+        onStartShouldSetPanResponder: (evt, gestureState) => true,
+        onMoveShouldSetPanResponder: (evt, gestureState) => true,
+        onPanResponderGrant: (evt, gestureState) => {   
+            this.timer && clearTimeout(this.timer)
+            this.setState({
+                mouseX:evt.nativeEvent.locationX,
+                mouseDownWidth:this.state.currentProgressWidth,
+                isBeginProgress:false
+            })
+        },
+        onPanResponderMove: (evt, gestureState) => {  
+            let disX=gestureState.dx
+            let val=this.state.mouseDownWidth+disX
+            if(val>=this.state.mainProgressWidth){
+                val=this.state.mainProgressWidth
+            }
+            if(val<=0){
+                val=0
+            }
+            this.setState({
+                currentProgressWidth:val
+            })
+        },
+        onPanResponderRelease: (evt, gestureState) => {  
+            let currentTim=this.state.currentProgressWidth*this.state.allTim/this.state.mainProgressWidth
+            if(currentTim<=0){
+                currentTim=0
+            }
+            if(currentTim>=this.state.totalTime){
+                currentTim=this.state.totalTime
+            }
+            this.player.seek(currentTim)
+            this.setState({
+                mouseX:0,
+                isBeginProgress:true
+            })
+            this._timeControlFun()
+        },
+    })
+    
 
     render() {
         let {videoUrl}=this.props
         //console.log(videoUrl)
 
         return (
-            <TouchableHighlight 
-            onPress={()=>{this._videoClickFun()}}
-            activeOpacity={1} 
-            underlayColor="transparent">
 
             <View style={styles.container}>
                 {
@@ -170,37 +230,60 @@ export default class Videoplay extends Component {
                                                 underlayColor="transparent">
                                                     <View style={styles.repeatIconBox}>
                                                         <FontAwesome name="repeat" style={styles.repeatIcon} size={24} />
+                                                        <Text style={styles.repeatTxt}>重播</Text>
                                                     </View>
                                                 </TouchableHighlight>
                                         </View>:""
                 }
                 
                 <View style={styles.playBox}>
-                    {
-                        this.state.controlTuff?<View style={styles.controlWarp}>
-                                    <TouchableHighlight 
+                    <View style={styles.controlWarp}>
+                                <TouchableHighlight 
+                                onPress={()=>{this._videoClickFun()}}
+                                activeOpacity={1} 
+                                underlayColor="transparent"
+                                style={styles.cBoxWarp}
+                                >
+                                    <View></View>
+                                </TouchableHighlight>
+                                {
+                                    this.state.controlTuff?<TouchableHighlight 
                                     onPress={()=>{this._controlPlayFun()}}
                                     activeOpacity={1} 
                                     underlayColor="transparent">
                                         <View style={styles.btnBox}>
-                                            <FontAwesome name={this.state.iconName} style={styles.iconSty} size={18} />
+                                            <FontAwesome name={this.state.iconName} style={styles.iconSty} size={20} />
                                         </View>
-                                    </TouchableHighlight>
-
-                                    <View style={styles.controlBox}>
+                                    </TouchableHighlight>:""
+                                }
+                                   
+                                {
+                                    this.state.controlTuff?<View style={styles.controlBox}>
                                         <Text style={styles.timBox}>{this.state.currentTime}</Text>   
-                                        <View style={styles.progressBox} onLayout={({nativeEvent:e})=>this._getProgressFun(e)}>
+                                        <View style={styles.progressBox}>
                                             <View style={styles.progressBg} >
-                                                <View style={styles.progressItem} width={this.state.currentProgressWidth} ></View>
+                                                <View style={styles.progressBgWarp} onLayout={({nativeEvent:e})=>this._getProgressFun(e)}>
+                                                    <View style={styles.progressItem} width={this.state.currentProgressWidth} ></View>
+                                                </View>
+                                                <View style={styles.dotBox} left={this.state.currentProgressWidth}   {...this._panResponder.panHandlers}>
+                                                    <View style={styles.minDotBox}></View>
+                                                </View>
                                             </View>
                                         </View>
                                         <Text style={styles.timBox}>{this.state.totalTime}</Text>
-                                        <Text style={styles.fullBtn}>全屏</Text>
-                                    </View>
-                                </View>:<View style={styles.smallPromptBox} onLayout={({nativeEvent:e})=>this._getMinProgressFun(e)}>
-                                    <View style={styles.smallPromptItem} width={this.state.currentMinProgressWidth} ></View>
-                                </View>
-                    }
+                                        <View style={styles.fullBtn}>
+                                            <Octicons name="screen-full" color="#ffffff" size={18}></Octicons>
+                                        </View>
+                                    </View>:""
+                                }
+                                
+                                {
+                                    !this.state.controlTuff?<View style={styles.smallPromptBox} onLayout={({nativeEvent:e})=>this._getMinProgressFun(e)}>
+                                        <View style={styles.smallPromptItem} width={this.state.currentMinProgressWidth} ></View>
+                                    </View>:""
+                                }
+                                
+                    </View>
                 </View>
 
 
@@ -224,12 +307,9 @@ export default class Videoplay extends Component {
                     onError={()=>{this._videoErrorFun()}}      // 当视频不能加载，或出错后的回调函数
                     progressUpdateInterval={this.state.updateTim}  //进度控制，每250ms调用一次，以获取视频播放的进度
                     style={styles.videoSty}
-                    
                     />
                 </View>
-
-            </View>
-            </TouchableHighlight>
+            </View>           
         )
     }
 }
@@ -297,14 +377,13 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         textAlign:"center",
         color:"#ffffff",
-        fontSize: 12
+        fontSize: 12,
+        width:60
     },
     fullBtn:{
-        textAlign:"center",
-        color:"#ffffff",
-        fontSize: 12,
-        paddingRight: 10
-
+        paddingRight: 10,
+        justifyContent:"center",
+        alignItems:"center"
     },
     progressBox:{
         height:30,
@@ -315,9 +394,15 @@ const styles = StyleSheet.create({
     },
     progressBg:{
         height:3,
+        position:"relative",
+        flex: 1,
+        paddingHorizontal:8
+    },
+    progressBgWarp:{
+        height:3,
         backgroundColor:"#ffffff",
         position:"relative",
-        flex: 1
+        flex: 1,
     },
     progressItem:{
         height:3,
@@ -356,10 +441,16 @@ const styles = StyleSheet.create({
         alignItems:"center"
     },
     repeatIconBox:{
-        width:80,
         height:80,
         justifyContent:"center",
-        alignItems:"center"
+        alignItems:"center",
+        flexDirection:"row"
+    },
+    repeatTxt:{
+        lineHeight:80,
+        color:"#ffffff",
+        fontSize:14,
+        paddingLeft: 10
     },
     repeatIcon:{
         color:"#ffffff"
@@ -373,9 +464,33 @@ const styles = StyleSheet.create({
         justifyContent:"center",
         alignItems:"center"
     },
+    cBoxWarp:{
+        position:"absolute",
+        top:0,
+        left:0,
+        height:"100%",
+        width:"100%"
+    },
     videoWarpBox:{
         width:width,
         height:width*9/16
+    },
+    dotBox:{
+        width:16,
+        height:16,
+        backgroundColor:"rgba(255,255,255,.7)",
+        borderRadius:8,
+        position:"absolute",
+        top:-7,
+        left:0,
+        justifyContent:"center",
+        alignItems:"center"
+    },
+    minDotBox:{
+        width:10,
+        height:10,
+        backgroundColor:"rgba(255,255,255,1)",
+        borderRadius:5
     }
 
 
