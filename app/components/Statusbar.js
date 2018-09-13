@@ -27,25 +27,27 @@ class Videodetail extends Component {
     }
   
     render() {
-        let { barTuff }=this.props
+        let { barTuff,barVisited,barHeight }=this.props
+        let isVisited=barVisited || false
+        let barH=barHeight || 33
 
         return (
             <View>
                 {
                     barTuff==="black"?<StatusBar  
                                         animated={true}             //指定状态栏的变化是否应以动画形式呈现 
-                                        hidden={false}              //是否隐藏状态栏。  
+                                        hidden={isVisited}              //是否隐藏状态栏。  
                                         barStyle={'light-content'}   
                                         >  
                                     </StatusBar>:<StatusBar  
                                     animated={true}             
-                                    hidden={false}                
+                                    hidden={isVisited}                
                                     barStyle={'dark-content'}   
                                     >  
                                 </StatusBar>
                 }
                 {
-                    barTuff==="black"?<View style={styles.headerBlackTop}></View>:<View style={styles.headerWhiteTop}></View>
+                    barTuff==="black"?<View style={styles.headerBlackTop} height={barH}></View>:<View style={styles.headerWhiteTop} height={barH}></View>
                 } 
             </View>
         )
@@ -61,12 +63,10 @@ const styles = StyleSheet.create({
         backgroundColor: '#ffffff'
     },
     headerBlackTop:{
-        height:33,
         width:width,
         backgroundColor:"#000000"
     },
     headerWhiteTop:{
-        height:33,
         width:width,
         backgroundColor:"#ffffff"
     }

@@ -29,13 +29,14 @@ class Videodetail extends Component {
         super(props, context)
         this.state={
             contentDat:"",
-            authorDat:""
+            authorDat:"",
+            isFullScreen:false
         }
     }
     componentDidMount() {
         this._requestDatFun()
     }
-
+    
     _requestDatFun(){  
         let id=this.props.navigation.state.params.id
         let url=config.contentUrl.replace(/\{0\}/gi,id)              //数据请求
@@ -53,23 +54,32 @@ class Videodetail extends Component {
         }) 
     }
 
+    _setIsFullScreen(item){
+        this.setState({
+            isFullScreen:item
+        })
+    }
+
     render() {
         let {navigation}=this.props
         return (
             <View style={styles.container}>
-                <Statusbar barTuff="black" />
-                
+                <Statusbar barTuff="black" barVisited={this.state.isFullScreen?true:false}  />
+
+                <View style={styles.videoBox}>
+                    <Video 
+                    videoUrl={this.state.contentDat.resourceUrl} 
+                    videoTitle={this.state.contentDat.title} 
+                    fullCallBack={(item)=>{this._setIsFullScreen(item)}} 
+                    />
+                    <View style={[styles.backBtn,this.state.isFullScreen?"":styles.setZindexNum]}>
+                        <Ionicons onPress={()=>{ navigation.goBack() }} name="md-arrow-back" size={25} color="#ffffff" />
+                    </View>
+                </View>
+
                 <ScrollView
                 showsVerticalScrollIndicator={false}
-                stickyHeaderIndices={[0]}
-                >
-                    <View style={styles.videoBox}>
-                        <Video videoUrl={this.state.contentDat.resourceUrl} />
-                        <View style={styles.backBtn}>
-                            <Ionicons onPress={()=>{ navigation.goBack() }} name="md-arrow-back" size={25} color="#ffffff" />
-                        </View>
-                    </View>
-
+                >       
                     <View style={styles.mainBox}>
                         <View style={styles.titBox}>
                             <Text style={styles.titTxt}>{this.state.contentDat.title}</Text>
@@ -111,7 +121,9 @@ const styles = StyleSheet.create({
    	container:{
         justifyContent:'flex-start',
         alignItems: 'center',
-        backgroundColor: '#ffffff'
+        backgroundColor: '#ffffff',
+        flex: 1,
+        width:"100%"
     },
     headerTop:{
         height:33,
@@ -119,7 +131,9 @@ const styles = StyleSheet.create({
     },
     videoBox:{
         width:width,
-        height:width*212/375
+        height:width*212/375,
+        position:"relative",
+        zIndex: 100
     },
     videoImg:{
         width:width,
@@ -129,6 +143,9 @@ const styles = StyleSheet.create({
         position:"absolute",
         top: 10,
         left:16
+    },
+    setZindexNum:{
+        zIndex: 2000
     },
     mainBox:{
         margin: 16
