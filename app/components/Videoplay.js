@@ -28,7 +28,7 @@ export default class Videoplay extends Component {
             iconName:"play",    //播放图标
             volume:1,           //声音
             rate:1.0,            //默认速率
-            updateTim:50,      //播放中更新时间  默认250ms
+            updateTim:200,      //播放中更新时间  默认250ms
             muted:false,        //是否静音
             repeat:false,       //是否重复
             resizeMode:"contain", //播放器展示形式
@@ -58,7 +58,10 @@ export default class Videoplay extends Component {
             fullIcon:"screen-full",      //默认是全屏图标
             isFullScreen:false,          //是否是全屏
             videoWidht:vW,           //播放器的默认宽度
-            videoHeight:vH      //播放器的默认高度
+            videoHeight:vH,      //播放器的默认高度
+            dotLeft:-13,           //控制点距离左边的位置
+            dotVal:13,              //控制圆点位置纠正
+            scrollTime:null         //滑动选择之后播放间隔时间
         }
     }
     componentDidMount() {
@@ -66,7 +69,12 @@ export default class Videoplay extends Component {
         // Orientation.lockToPortrait()    //竖屏
     }
     componentWillUnmount() {
-        Orientation.lockToPortrait()
+        this.setState({
+            isPlay:false,
+            iconName:"pause"
+        })
+        this.state.timer && clearTimeout(this.state.timer)
+        this.state.scrollTime && clearTimeout(this.state.scrollTime)
     }
     _controlPlayFun(){   //控制视频播放还是暂停
         if(this.state.isPlay){       //暂停
@@ -91,7 +99,8 @@ export default class Videoplay extends Component {
             isLoad:false,
             currentTime:timeFormat(item.currentTime),
             totalTime:timeFormat(item.duration),
-            allTim:item.duration
+            allTim:item.duration,
+            currentProgressWidth:0
         })
     }
     _setTimeFun(item){      // 进度控制，默认每250ms调用一次，以获取视频播放的进度
@@ -106,7 +115,8 @@ export default class Videoplay extends Component {
                 currentTime:cTim,
                 sCurrentTime:item.currentTime,
                 currentProgressWidth:bigW,
-                currentMinProgressWidth:samllW
+                currentMinProgressWidth:samllW,
+                dotLeft:bigW-this.state.dotVal
             })
         }else{
             this.setState({
@@ -127,7 +137,7 @@ export default class Videoplay extends Component {
 
     _onEndFun(item){            // 当视频播放完毕后的回调函数
         console.log("播放完毕")
-        this.timer && clearTimeout(this.timer)
+        this.state.timer && clearTimeout(this.state.timer)
         this.setState({
             isPlay:true,
             iconName:"play",
@@ -135,12 +145,13 @@ export default class Videoplay extends Component {
             isVideoEnd:true,
             controlTuff:true,
             currentProgressWidth:this.state.mainProgressWidth,
-            currentMinProgressWidth:this.state.minProgressWidth
+            currentMinProgressWidth:this.state.minProgressWidth,
+            dotLeft:this.state.mainProgressWidth-this.state.dotVal
         })
     }
     _timeControlFun(){          //定时显示隐藏控制条
-        this.timer && clearTimeout(this.timer)
-        this.timer=setTimeout(()=>{
+        this.state.timer && clearTimeout(this.state.timer)
+        this.state.timer=setTimeout(()=>{
             this.setState({
                 controlTuff:false
             })
@@ -154,9 +165,9 @@ export default class Videoplay extends Component {
         if(this.state.controlTuff){
             bTuff=false
         }
-        // this.setState({
-        //     controlTuff:bTuff
-        // })
+        this.setState({
+            controlTuff:bTuff
+        })
         this._timeControlFun()
     }
 
@@ -203,7 +214,8 @@ export default class Videoplay extends Component {
         onStartShouldSetPanResponder: (evt, gestureState) => true,
         onMoveShouldSetPanResponder: (evt, gestureState) => true,
         onPanResponderGrant: (evt, gestureState) => {   
-            this.timer && clearTimeout(this.timer)
+            this.state.timer && clearTimeout(this.state.timer)
+            this.state.scrollTime && clearTimeout(this.state.scrollTime)
             this.setState({
                 mouseX:evt.nativeEvent.locationX,
                 mouseY:evt.nativeEvent.locationY,
@@ -226,7 +238,8 @@ export default class Videoplay extends Component {
                 val=0
             }
             this.setState({
-                currentProgressWidth:val
+                currentProgressWidth:val,
+                dotLeft:val-this.state.dotVal
             })
         },
         onPanResponderRelease: (evt, gestureState) => {  
@@ -237,11 +250,13 @@ export default class Videoplay extends Component {
             if(currentTim>=this.state.totalTime){
                 currentTim=this.state.totalTime
             }
-            this.player.seek(currentTim)
-            this.setState({
-                mouseX:0,
-                isBeginProgress:true
-            })
+            this.state.scrollTime=setTimeout(()=>{
+                this.player.seek(currentTim)
+                this.setState({
+                    mouseX:0,
+                    isBeginProgress:true
+                })
+            },500)
             this._timeControlFun()
         },
     })
@@ -291,6 +306,14 @@ export default class Videoplay extends Component {
                                                     </TouchableHighlight>
                                             </View>:""
                     }
+                    {
+                        this.state.isFullScreen&&this.state.controlTuff?<View style={styles.titFullScreen}>
+                            <Entypo 
+                            onPress={()=>{ this._fullScreenFun() }} 
+                            name="chevron-left" size={25} color="#ffffff" />
+                            <Text style={styles.titTxtFull}>{videoTitle}</Text>
+                        </View>:""
+                    }
                     
                     <View style={styles.playBox}>
                         <View style={styles.controlWarp}>
@@ -313,14 +336,7 @@ export default class Videoplay extends Component {
                                             </View>
                                         </TouchableHighlight>:""
                                     }
-                                    {
-                                        this.state.isFullScreen&&this.state.controlTuff?<View style={styles.titFullScreen}>
-                                            <Entypo 
-                                            onPress={()=>{ this._fullScreenFun() }} 
-                                            name="chevron-left" size={25} color="#ffffff" />
-                                            <Text style={styles.titTxtFull}>{videoTitle}</Text>
-                                        </View>:""
-                                    }
+                                    
                                     
                                     {
                                         this.state.controlTuff?
@@ -332,7 +348,7 @@ export default class Videoplay extends Component {
                                                         <View style={styles.progressBgWarp} onLayout={({nativeEvent:e})=>this._getProgressFun(e)}>
                                                             <View style={styles.progressItem} width={this.state.currentProgressWidth} ></View>
                                                         </View>
-                                                        <View style={styles.dotBox} left={this.state.currentProgressWidth}   {...this._panResponder.panHandlers}>
+                                                        <View style={styles.dotBox} left={this.state.dotLeft}   {...this._panResponder.panHandlers}>
                                                             <View style={styles.minDotBox}>
                                                                 <View style={styles.minsNumBox}></View>
                                                             </View>
@@ -345,7 +361,8 @@ export default class Videoplay extends Component {
                                                 activeOpacity={1} 
                                                 underlayColor="transparent">
                                                     <View style={styles.fullBtn}>
-                                                        <Octicons name={this.state.fullIcon} color="#ffffff" size={18}></Octicons>
+                                                        <Octicons name={this.state.fullIcon} style={styles.fullIcon}  size={18}></Octicons>
+                                                        <View style={styles.fullBtnBox}></View>
                                                     </View>
                                                 </TouchableHighlight>
                                             </View>
@@ -492,7 +509,23 @@ const styles = StyleSheet.create({
     fullBtn:{
         paddingRight: 10,
         justifyContent:"center",
-        alignItems:"center"
+        alignItems:"center",
+        position:"relative"
+    },
+    fullBtnBox:{
+        width:50,
+        height:50,
+        position:"absolute",
+        top:"50%",
+        left:"50%",
+        marginTop: -25,
+        marginLeft:-25,
+        zIndex:10
+    },
+    fullIcon:{
+        position:"relative",
+        zIndex:15,
+        color:"#ffffff"
     },
     progressBox:{
         height:30,
@@ -583,7 +616,8 @@ const styles = StyleSheet.create({
         //backgroundColor:"rgba(0,0,0,.5)",
         position:"absolute",
         top:10,
-        left:0
+        left:0,
+        zIndex:20000
     },
     titIcon:{
         color:"#ffffff",
@@ -602,8 +636,7 @@ const styles = StyleSheet.create({
         left:0,
         height:"100%",
         width:"100%",
-        zIndex:13,
-        backgroundColor:"#00cc00"
+        zIndex:13
     },
     videoWarpBox:{
         width:"100%",
@@ -616,7 +649,7 @@ const styles = StyleSheet.create({
         borderRadius:18,
         position:"absolute",
         top:-17,
-        left:-100,
+        left:0,
         justifyContent:"center",
         alignItems:"center"
     },
