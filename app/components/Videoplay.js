@@ -19,7 +19,6 @@ const {width,height} = Dimensions.get('window')
 const vW=width           //播放器的默认宽度
 const vH=width*9/16      //播放器的默认高度
 
-console.log(width,vH)
 export default class Videoplay extends Component {
     constructor(props, context) {
         super(props, context)
@@ -127,11 +126,15 @@ export default class Videoplay extends Component {
         }
     }
     _setFullScreenProgressFun(){     //全屏时候设置进度条宽度
-        let bigW=this.state.sCurrentTime*this.state.mainProgressWidth/this.state.allTim
-        let samllW=this.state.sCurrentTime*this.state.minProgressWidth/this.state.allTim
+        let bigW=0,samllW=0
+        if(this.state.allTim!==0){
+            bigW=this.state.sCurrentTime*this.state.mainProgressWidth/this.state.allTim
+            samllW=this.state.sCurrentTime*this.state.minProgressWidth/this.state.allTim
+        }
         this.setState({
             currentProgressWidth:bigW,
-            currentMinProgressWidth:samllW
+            currentMinProgressWidth:samllW,
+            dotLeft:bigW-this.state.dotVal
         })
     }
 
