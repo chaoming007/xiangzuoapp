@@ -5,6 +5,8 @@ import {
     Text,
     TouchableHighlight,
     PanResponder,
+    Animated,
+    Easing,
     Dimensions} from 'react-native'
 
 import Video from 'react-native-video'
@@ -52,7 +54,7 @@ export default class Videoplay extends Component {
             mouseX:0,                    //手指点击相对于相应元素边界的
             mouseDownWidth:0,            //当手指按下时候获取进度条宽度
             isBeginProgress:true,        //是否允许进度条显示相应进度
-            timc:300000,                  //控制条隐藏时间
+            timc:3000,                  //控制条隐藏时间
             allTim:0,                    //没特殊处理过的总时间
             fullIcon:"screen-full",      //默认是全屏图标
             isFullScreen:false,          //是否是全屏
@@ -60,12 +62,15 @@ export default class Videoplay extends Component {
             videoHeight:vH,      //播放器的默认高度
             dotLeft:-13,           //控制点距离左边的位置
             dotVal:13,              //控制圆点位置纠正
-            scrollTime:null         //滑动选择之后播放间隔时间
+            scrollTime:null,         //滑动选择之后播放间隔时间
+            animValue: new Animated.Value(0),
         }
     }
     componentDidMount() {
         //Orientation.lockToLandscape()    //横屏
         // Orientation.lockToPortrait()    //竖屏
+        //this._testScreenFun()
+        
     }
     componentWillUnmount() {
         this.setState({
@@ -156,7 +161,7 @@ export default class Videoplay extends Component {
         this.state.timer && clearTimeout(this.state.timer)
         this.state.timer=setTimeout(()=>{
             this.setState({
-                controlTuff:false
+                controlTuff:false    //控制条隐藏
             })
         },this.state.timc)
     }
@@ -282,15 +287,89 @@ export default class Videoplay extends Component {
             })
         }
        this.props.fullCallBack(!this.state.isFullScreen)   //通知外部是不是全屏
+       this._animateFun()
     }
  
+    _testScreenFun(){       //判断手机横竖屏
+        Orientation.addOrientationListener(orientationDidChange.bind(this))
+        function orientationDidChange(orientation){
+            if (orientation === 'LANDSCAPE') {      //横屏
+                console.log("横屏")
+                this.setState({                 //不是全屏,进入全屏
+                    fullIcon:"screen-normal",
+                    isFullScreen:true,
+                    videoWidht:height,
+                    videoHeight:width,
+                    controlTuff:false
+                })
+            } else {                                //竖屏
+                console.log("竖屏")
+                this.setState({
+                    fullIcon:"screen-full",
+                    isFullScreen:false,
+                    videoWidht:vW,
+                    videoHeight:vH,
+                    controlTuff:false
+                })
+            }
+        }
+        this.props.fullCallBack(!this.state.isFullScreen)   //通知外部是不是全屏
+        this._animateFun()
+    }
+
+    _animateFun(){          //动画函数
+        let val=0
+        if(this.state.isFullScreen){        //是全屏，退出全屏
+            this.state.animValue=new Animated.Value(1)
+            val=0
+        }else{                          //不是全屏,进入全屏
+            this.state.animValue=new Animated.Value(0)
+            val=1
+        }
+        Animated.timing(
+            this.state.animValue,
+            {
+                toValue:val,
+                duration:400,
+                easing: Easing.linear
+            }
+        ).start()
+    }
+
+
     render() {
         let {videoUrl,videoTitle}=this.props
         //console.log(videoUrl)
 
         return (
             <View style={styles.content}>
-                <View style={[styles.container,this.state.isFullScreen?styles.fullScreenSty:""]}>
+                <Animated.View style={[styles.container,this.state.isFullScreen?styles.fullScreenSty:"",
+                    {
+                        transform:[
+                            {
+                                rotate:this.state.animValue.interpolate({
+                                    inputRange:[0, 1],
+                                    outputRange:["0deg","90deg"]
+                                })
+                            },
+                            {
+                                translateX: this.state.animValue.interpolate({
+                                    inputRange: [0, 1],
+                                    outputRange: [0, vH/2+10],
+                                })
+                            }
+                        ],
+                        width:this.state.animValue.interpolate({
+                                inputRange:[0, 1],
+                                outputRange:[width,height]
+                        })
+ 
+                    }
+            
+                ]}>
+
+
+
                     {
                         this.state.isLoad?<View style={styles.onLoadBox} >
                                             <Spinkit isVisible={true} color="#ffffff" type="FadingCircleAlt" size={38} ></Spinkit>
@@ -328,58 +407,54 @@ export default class Videoplay extends Component {
                                     >
                                         <View></View>
                                     </TouchableHighlight>
-                                    {
-                                        this.state.controlTuff?<TouchableHighlight 
-                                        onPress={()=>{this._controlPlayFun()}}
-                                        activeOpacity={1} 
-                                        style={styles.btnTounchBox}
-                                        underlayColor="transparent">
-                                            <View style={styles.btnBox}>
-                                                <FontAwesome name={this.state.iconName} style={styles.iconSty} size={20} />
-                                            </View>
-                                        </TouchableHighlight>:""
-                                    }
+
+
+
+                                  
+                                    <TouchableHighlight 
+                                    onPress={()=>{this._controlPlayFun()}}
+                                    activeOpacity={1} 
+                                    style={[styles.btnTounchBox,this.state.controlTuff?"":styles.hiddenSty]}
+                                    underlayColor="transparent">
+                                        <View style={styles.btnBox}>
+                                            <FontAwesome name={this.state.iconName} style={styles.iconSty} size={20} />
+                                        </View>
+                                    </TouchableHighlight>
                                     
-                                    
-                                    {
-                                        this.state.controlTuff?
-                                        <View style={styles.controlContent}>
-                                            <View style={styles.controlBox}>
-                                                <Text style={styles.timBox}>{this.state.currentTime}</Text>   
-                                                <View style={styles.progressBox}>
-                                                    <View style={styles.progressBg} >
-                                                        <View style={styles.progressBgWarp} onLayout={({nativeEvent:e})=>this._getProgressFun(e)}>
-                                                            <View style={styles.progressItem} width={this.state.currentProgressWidth} ></View>
-                                                        </View>
-                                                        <View style={styles.dotBox} left={this.state.dotLeft}   {...this._panResponder.panHandlers}>
-                                                            <View style={styles.minDotBox}>
-                                                                <View style={styles.minsNumBox}></View>
-                                                            </View>
+                                    <View style={[styles.controlContent,this.state.controlTuff?"":styles.hiddenSty]} >
+                                        <View style={styles.controlBox}>
+                                            <Text style={styles.timBox}>{this.state.currentTime}</Text>   
+                                            <View style={styles.progressBox}>
+                                                <View style={styles.progressBg} >
+                                                    <View style={styles.progressBgWarp} onLayout={({nativeEvent:e})=>this._getProgressFun(e)}>
+                                                        <View style={styles.progressItem} width={this.state.currentProgressWidth} ></View>
+                                                    </View>
+                                                    <View style={styles.dotBox} left={this.state.dotLeft}   {...this._panResponder.panHandlers}>
+                                                        <View style={styles.minDotBox}>
+                                                            <View style={styles.minsNumBox}></View>
                                                         </View>
                                                     </View>
                                                 </View>
-                                                <Text style={styles.timBox}>{this.state.totalTime}</Text>
-                                                <TouchableHighlight
-                                                onPress={()=>{this._fullScreenFun()}}
-                                                activeOpacity={1} 
-                                                underlayColor="transparent">
-                                                    <View style={styles.fullBtn}>
-                                                        <Octicons name={this.state.fullIcon} style={styles.fullIcon}  size={18}></Octicons>
-                                                        <View style={styles.fullBtnBox}></View>
-                                                    </View>
-                                                </TouchableHighlight>
                                             </View>
-                                        </View>:""
-                                    }
+                                            <Text style={styles.timBox}>{this.state.totalTime}</Text>
+                                            <TouchableHighlight
+                                            onPress={()=>{this._fullScreenFun()}}
+                                            activeOpacity={1} 
+                                            underlayColor="transparent">
+                                                <View style={styles.fullBtn}>
+                                                    <Octicons name={this.state.fullIcon} style={styles.fullIcon}  size={18}></Octicons>
+                                                    <View style={styles.fullBtnBox}></View>
+                                                </View>
+                                            </TouchableHighlight>
+                                        </View>
+                                    </View>
                                     
-                                    {
-                                        !this.state.controlTuff?<View 
-                                        style={styles.smallPromptBox} 
+                                    <View 
+                                        style={[styles.smallPromptBox,!this.state.controlTuff?"":styles.hiddenSty]} 
                                         onLayout={({nativeEvent:e})=>this._getMinProgressFun(e)}>
                                             <View style={styles.smallPromptItem} 
                                             width={this.state.currentMinProgressWidth} ></View>
-                                        </View>:""
-                                    }
+                                    </View>
                                     
                         </View>
                     </View>
@@ -405,7 +480,7 @@ export default class Videoplay extends Component {
                         style={styles.videoSty}
                         />
                     </View>
-                </View>  
+                </Animated.View>  
             </View>         
         )
     }
@@ -462,10 +537,10 @@ const styles = StyleSheet.create({
         zIndex:15
     },
     btnBox:{
-        width:50,
-        height:50,
-        borderRadius:15,
-        backgroundColor:"rgba(0,0,0,0.8)",
+        width:70,
+        height:70,
+        borderRadius:35,
+        backgroundColor:"rgba(0,0,0,0.5)",
         justifyContent:"center",
         alignItems:"center"
     },
@@ -484,30 +559,30 @@ const styles = StyleSheet.create({
         width:"100%",
         height:30,
         position:"absolute",
-        bottom:10,
+        bottom:5,
         left:0,
         zIndex:15,
         flexDirection: 'row',
         justifyContent:"center",
         alignItems:"center",
-        paddingHorizontal:15
+        paddingHorizontal:0
     },
     controlBox:{
         width:"100%",
         height:30,
         borderRadius:5,
-        backgroundColor:"rgba(0,0,0,.8)",
+        //backgroundColor:"rgba(0,0,0,.5)",
         zIndex:15,
         flexDirection: 'row',
         justifyContent:"center",
         alignItems:"center",
     },
     timBox:{
-        paddingHorizontal: 10,
+        paddingHorizontal: 5,
         textAlign:"center",
         color:"#ffffff",
         fontSize: 12,
-        width:60
+        width:50
     },
     fullBtn:{
         paddingRight: 10,
@@ -669,6 +744,10 @@ const styles = StyleSheet.create({
         height:10,
         backgroundColor:"rgba(255,255,255,1)",
         borderRadius:5,
+    },
+    hiddenSty:{
+        height:0,
+        overflow: 'hidden'
     }
 
 
