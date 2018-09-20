@@ -21,13 +21,19 @@ import Guanzhuitem from '../components/Guanzhuitem'
 import Listitem from '../components/Listitem'
 import Statusbar from '../components/Statusbar'
 import Gotop from '../components/Gotop'
+import request from '../util/request'
+import config from '../util/config'
 
 class Newsdetail extends Component {
     constructor(props, context) {
         super(props, context)
         this.state={
-            goTopTuff:null
+            goTopTuff:null,
+            contentDat:null
         }
+    }
+    componentDidMount(){
+        this._requestDatFun()
     }
 
     _scrollToTop(){
@@ -46,6 +52,21 @@ class Newsdetail extends Component {
             })
         }
     }
+    _requestDatFun(){  
+        let id=this.props.navigation.state.params.id
+        let url=config.contentUrl.replace(/\{0\}/gi,id)              //数据请求
+        request.get(url).then((dat)=>{
+            if(dat.data.errCode===0 && dat.data.errMsg==="成功"){
+                let data=dat.data.data
+                console.log("文章详情页",data)
+                this.setState({
+                    contentDat:{...data}
+                })
+            }
+        }).catch((err)=>{
+            console.log(err)
+        }) 
+    }
   
     render() {
         let {navigation}=this.props
@@ -53,6 +74,8 @@ class Newsdetail extends Component {
         return (
             <View style={styles.container}>
                 
+                {
+                this.state.contentDat?
                 <ScrollView
                 showsVerticalScrollIndicator={false}
                 ref="scrollMain"
@@ -60,7 +83,7 @@ class Newsdetail extends Component {
                 onScroll={(v)=>{this._goTopFun(v)}}
                 >
                     <View style={styles.newsBox}>
-                        <Image source={require("../assets/img/car.jpg")} style={styles.newsImg} />
+                        <Image source={{uri:this.state.contentDat.cover}} style={styles.newsImg} />
                         <View style={styles.backBtn}>
                             <Ionicons onPress={()=>{ navigation.goBack() }} name="md-arrow-back" size={25} color="#ffffff" />
                             <View style={styles.btnWarp}>
@@ -69,42 +92,27 @@ class Newsdetail extends Component {
                             </View>
                         </View>
                         <Text style={styles.contentTitBox}>
-                            大众汽车的质量怎么样呀？请大家评测一下，众汽车的质量怎么样呀
+                            {this.state.contentDat.title}
                         </Text>
                     </View>
 
                     <View style={styles.gzWarp}>
-                        <Guanzhuitem />
+                        {/*  <Guanzhuitem />  */}
                     </View>
 
                     <View style={styles.mainBox}>
-                        <View style={styles.titBox}>
-                            <Text style={styles.titTxt}>1.大众汽车的质量怎么样呀？</Text>
-                        </View>
+                        {/*
+                            <View style={styles.titBox}>
+                                <Text style={styles.titTxt}>1.大众汽车的质量怎么样呀？</Text>
+                            </View>
+                        */}
+                        
                         <View style={styles.contentBox}>
                             <Text style={styles.contentTxt}>
-                            请大家评测一下，大众汽车的质量怎么样呀大众汽车的质量怎么样呀!请大家评测一下，大众汽车的质量怎么样呀大众汽车的质量怎么样呀请大家评测一下，大众汽车的质量怎么样呀大众汽车的质量怎么样呀请大家评测一下，大众汽车的质量怎么样呀大众汽车的质量怎么样呀请大家评测一下，大众汽车的质量怎么样呀大众汽车的质量怎么样呀请大家评测一下，大众汽车的质量怎么样呀大众汽车的质量怎么样呀
+                                {this.state.contentDat.content}
                             </Text>
                         </View>
-                        <View style={styles.titBox}>
-                            <Text style={styles.titTxt}>2.大众汽车的质量怎么样呀？</Text>
-                        </View>
-                        <View style={styles.contentBox}>
-                            <Text style={styles.contentTxt}>
-                            请大家评测一下，大众汽车的质量怎么样呀大众汽车的质量怎么样呀!请大家评测一下，大众汽车的质量怎么样呀大众汽车的质量怎么样呀请大家评测一下，大众汽车的质量怎么样呀大众汽车的质量怎么样呀请大家评测一下，大众汽车的质量怎么样呀大众汽车的质量怎么样呀请大家评测一下，大众汽车的质量怎么样呀大众汽车的质量怎么样呀请大家评测一下，大众汽车的质量怎么样呀大众汽车的质量怎么样呀
-                            </Text>
-                        </View>
-                        <View style={styles.contentImg}>
-                            <Image source={require("../assets/img/1.png")} style={styles.imgSty} />
-                        </View>
-                        <View style={styles.titBox}>
-                            <Text style={styles.titTxt}>3.大众汽车的质量怎么样呀？</Text>
-                        </View>
-                        <View style={styles.contentBox}>
-                            <Text style={styles.contentTxt}>
-                            请大家评测一下，大众汽车的质量怎么样呀大众汽车的质量怎么样呀!请大家评测一下，大众汽车的质量怎么样呀大众汽车的质量怎么样呀请大家评测一下，大众汽车的质量怎么样呀大众汽车的质量怎么样呀请大家评测一下，大众汽车的质量怎么样呀大众汽车的质量怎么样呀请大家评测一下，大众汽车的质量怎么样呀大众汽车的质量怎么样呀请大家评测一下，大众汽车的质量怎么样呀大众汽车的质量怎么样呀
-                            </Text>
-                        </View>
+                       
                     </View>
 
                     
@@ -123,7 +131,8 @@ class Newsdetail extends Component {
             
                     {/* 订阅内容 end  */}
 
-                </ScrollView>
+                </ScrollView>:""
+                }
 
                 <Gotop  goTopTuff={this.state.goTopTuff}  scrollFun={this._scrollToTop.bind(this)} />
                 

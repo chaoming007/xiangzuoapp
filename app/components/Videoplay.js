@@ -63,7 +63,7 @@ export default class Videoplay extends Component {
             dotLeft:-13,           //控制点距离左边的位置
             dotVal:13,              //控制圆点位置纠正
             scrollTime:null,         //滑动选择之后播放间隔时间
-            animValue: new Animated.Value(0),
+            animValue: new Animated.Value(0)
         }
     }
     componentDidMount() {

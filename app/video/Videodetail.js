@@ -7,6 +7,7 @@ import {
     ScrollView,
     Dimensions,
     StatusBar,
+    TouchableHighlight,
     Image
 } from 'react-native'
 
@@ -30,7 +31,9 @@ class Videodetail extends Component {
         this.state={
             contentDat:"",
             authorDat:"",
-            isFullScreen:false
+            isFullScreen:false,
+            relatedDat:[],
+            linkUrl:"Videodetail"
         }
     }
     componentDidMount() {
@@ -46,7 +49,8 @@ class Videodetail extends Component {
                 console.log("视频数据",data)
                 this.setState({
                     contentDat:{...data},
-                    authorDat:{...data.author}
+                    authorDat:{...data.author},
+                    relatedDat:[...data.related]
                 })
             }
         }).catch((err)=>{
@@ -100,10 +104,17 @@ class Videodetail extends Component {
                     <View style={styles.dingyueBox}>
                         <Text style={styles.dingyueTit}>我喜欢的汽车</Text>
                         <View style={styles.dingyueList}>
-                            <Listitem isImg={true} playTuff={true} />
-                            <Listitem isImg={true} playTuff={true} />
-                            <Listitem isImg={true} playTuff={true} />
-                            <Listitem isImg={true} playTuff={true} />
+                            {
+                                this.state.relatedDat.map((item,key)=>{
+                                    return <Listitem 
+                                            renderDat={item} 
+                                            isImg={true} 
+                                            playTuff={true} 
+                                            {...this.props}
+                                            linkUrl={this.state.linkUrl}
+                                            key={key} />
+                                })
+                            }
                         </View>
                     </View>
             
