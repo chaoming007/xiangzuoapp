@@ -1,32 +1,31 @@
 import React, { Component } from 'react'
 import {
-    Platform,
     StyleSheet,
     Text,
     View,
     ScrollView,
     Dimensions,
-    StatusBar,
-    Image,
-    TouchableHighlight
-} from 'react-native'
+    Image} from 'react-native'
 
 import {connect} from 'react-redux'
 
 import Ionicons from 'react-native-vector-icons/Ionicons'
 
-const {height, width} = Dimensions.get('window')
+const {width} = Dimensions.get('window')
 
-import Guanzhuitem from '../components/Guanzhuitem'
 import Listitem from '../components/Listitem'
-import Statusbar from '../components/Statusbar'
 import Gotop from '../components/Gotop'
+import Audio from '../components/Audioplay'
+
+import request from '../util/request'
+import config from '../util/config'
 
 class Audiodetail extends Component {
     constructor(props, context) {
         super(props, context)
         this.state={
-            goTopTuff:null
+            goTopTuff:null,
+            contentDat:{}
         }
     }
 
@@ -46,11 +45,31 @@ class Audiodetail extends Component {
             })
         }
     }
+
+
+    componentDidMount() {
+        this._requestDatFun()
+    }
+
+    _requestDatFun(){  
+        let id=this.props.navigation.state.params.id
+        let url=config.contentUrl.replace(/\{0\}/gi,id)              //数据请求
+        request.get(url).then((dat)=>{
+            if(dat.data.errCode===0 && dat.data.errMsg==="成功"){
+                let data=dat.data.data
+                console.log("音频数据",data)
+                this.setState({
+                    contentDat:{...data}
+                })
+            }
+        }).catch((err)=>{
+            console.log(err)
+        }) 
+    }
   
     render() {
 
         let {navigation}=this.props
-
         return (
             <View style={styles.container}>
                 
@@ -60,6 +79,8 @@ class Audiodetail extends Component {
                 scrollEventThrottle={10}
                 onScroll={(v)=>{this._goTopFun(v)}}
                 >
+
+
                     <View style={styles.audioTopBox}>
 
                         <View style={styles.backBtn}>
@@ -71,40 +92,24 @@ class Audiodetail extends Component {
                         </View>
                        
                         <View style={styles.audioBgBox}>                        
-                            <Image source={require("../assets/img/1.png")} style={styles.audioImg} />
+                            <Image source={{uri:this.state.contentDat.cover}} style={styles.audioImg} />
                         </View>
                         <View style={styles.audioTitBox}>
                             <Text style={styles.audioTitTxt}>
-                                凯迪拉克是一个不错的车
+                                {this.state.contentDat.title}
                             </Text>
                             <Text style={styles.audioTitInfo}>
-                                本田crv是一个非常好的车，他的动力非常好
+                                {this.state.contentDat.content}
                             </Text>
                         </View>
                         
                         {/* video播放器 start */}
 
-                        <View style={styles.audioPlay}>
-                            <View style={styles.timeLine}>
-                                <View style={styles.timeLineBg}>
-                                    <View style={styles.timeDott}></View>
-                                </View>
-                            </View>
-                            <View style={styles.timeBox}>
-                                <Text style={styles.timTxt}>02:10</Text>
-                                <Text style={styles.timTxt}>-02:10</Text>
-                            </View>
-                        </View>
-                        <View style={styles.playVideoBtn}>
-                            <Image source={require("../assets/icon/shoucang.png")} style={styles.scBtn} />
-                            <View style={styles.playB}>
-                                <Image source={require("../assets/icon/next.png")} style={styles.nextBtn} />
-                                <Image source={require("../assets/icon/audio_play.png")} style={styles.audioPlayBtn} />
-                                <Image source={require("../assets/icon/next.png")} style={styles.nextBtn} />
-                            </View>
-                            <Image source={require("../assets/icon/liebiao.png")} style={styles.lbBtn} />
-                        </View>
-
+                        <Audio 
+                        videoUrl={this.state.contentDat.resourceUrl} 
+                        videoTitle={"标题"} 
+                        />
+                   
                         {/* video播放器 end */}
 
                     </View>
@@ -148,6 +153,7 @@ const styles = StyleSheet.create({
     audioTopBox:{
         backgroundColor:"#f0dde3",
         width:width,
+        paddingBottom: 50,
         justifyContent:'center',
         alignItems: 'center'
     },

@@ -2,7 +2,7 @@
  * @Author: chaoming007@163.com 
  * @Date: 2018-06-25 15:16:50 
  * @Last Modified by: chaoming007@163.com
- * @Last Modified time: 2018-09-06 16:20:46
+ * @Last Modified time: 2018-09-21 14:23:34
  */
 
 import React, { Component } from 'react';
@@ -34,7 +34,7 @@ export default class Tabbar extends Component {
     constructor(props, context) {
         super(props, context)
         this.state={
-            selectedTab: 'video'
+            selectedTab: 'audio'
         }
     }
     render(){

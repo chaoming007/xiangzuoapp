@@ -7,6 +7,9 @@ export default{
     contentUrl:"http://111.231.193.35/thor-api/opuses/{0}/content",  //详情页地址
     
     
+    videoUri:"http://1251180858.vod2.myqcloud.com/4180480evodtransgzp1251180858/e56f49315285890781637511664/v.f20.mp4", //视频默认地址
+
+
     pageSize:5,    //每页显示数据条数
     dataType:[        //(0为资讯、1为音频、2为视频）
         {   
