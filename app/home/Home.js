@@ -48,7 +48,6 @@ class Home extends Component {
 
     _requestDatFun(){           //请求数据
         request.get(config.homeUrl).then((dat)=>{
-            console.log("首页数据：",dat)
             if(dat.data.errCode===0 && dat.data.errMsg==="成功"){
                 let data=dat.data.data
                 this.setState({
@@ -83,6 +82,7 @@ class Home extends Component {
     }
 
     render() {
+
         return (
         <View style={styles.container}>
             <Statusbar  />
@@ -213,7 +213,7 @@ class Home extends Component {
                 {/* 聆听心灵 end */}
 
                 <View style={styles.container}>
-                    <Xinlingvideolist renderDat={this.state.audioListDat} />
+                    <Xinlingvideolist {...this.props} renderDat={this.state.audioListDat} />
                     <Footline />
                 </View>
                 
@@ -221,7 +221,7 @@ class Home extends Component {
 			</ScrollView>
 
 			{/*搜索历史 start*/}
-				<Historypagemodel />
+				<Historypagemodel {...this.props}/>
             {/*搜索历史 end */}
             
 

@@ -6,28 +6,81 @@ import {
   View,
   Image,
   TextInput,
-  Dimensions
+  Dimensions,
+  TouchableHighlight
 } from 'react-native'
 
 const {height, width} = Dimensions.get('window')
 
 import Feather from 'react-native-vector-icons/Feather'
 
+import request from '../util/request'
+import config from '../util/config'
+
+
 export default class Searchhistory extends Component {
     constructor(props, context) {
       super(props, context)
       this.state={
+          keywords:"年3",    //搜索关键字
+          data:[],          //请求数据
+          focus:true,        //搜索框是否为焦点
+          linkUrl:"Videodetail"
       }
     }
+
+    componentDidMount() {
+        //this._requestDatFun()
+    }
+
+    _changeTxtFun(txt){             //输入关键词搜索
+        console.log(txt)
+        if(txt==""){
+            this.setState({
+                data:[]
+            })
+            return
+        }else{
+            this._requestDatFun(txt)
+        }
+    }
+
+    _requestDatFun(keywords){           //请求数据
+        request.get(config.listUrl,{title:keywords}).then((dat)=>{
+            if(dat.data.errCode===0 && dat.data.errMsg==="成功"){
+                let data=dat.data.data.length>5?dat.data.data.slice(0,5):dat.data.data
+                console.log("搜索结果数据：",data)
+                this.setState({
+                    data:[...data]
+                })
+            }
+        }).catch((err)=>{
+            console.log(err)
+        }) 
+    }
+
+    _jumpLinkFun(item){
+        let { navigation,setSearchHistory } = this.props
+        setSearchHistory()
+        navigation.navigate(this.state.linkUrl,{id:item.id})
+    }
+
+
     render() {
-        let { setSearchHistory } = this.props
+        let { setSearchHistory ,navigation } = this.props
         return (
             <View style={styles.container}>
                
                 <View style={styles.inpWarp}>
                     <View style={styles.inpWarpSty}>
                         <Feather name="search" size={20} style={styles.inpIcon}  />
-                        <TextInput autoCorrect={false} placeholder="请输入文字" style={styles.inpSty} ></TextInput>
+                        <TextInput 
+                        autoCorrect={false} 
+                        placeholder="请输入文字" 
+                        autoFocus={this.state.focus}
+                        onChangeText={(txt)=>{this._changeTxtFun(txt)}}
+                        style={styles.inpSty} >
+                        </TextInput>
                     </View>
                     <View style={styles.closeBox}>
                         <Text style={styles.closeTxt} onPress={()=>{setSearchHistory()}} >取消</Text>
@@ -47,44 +100,61 @@ export default class Searchhistory extends Component {
                 </View>
 
                 <View style={styles.historyList}>
-                    <View style={styles.historyItem}>
-                        <View style={styles.searchIcon}><Feather name="search" size={15} color="#0d0e15"  /></View>
-                        <View style={styles.searchTxtBox}>
-                            <Text style={styles.searchTxt}>大众马自达</Text>
-                        </View>
-                    </View>
-                    <View style={styles.historyItem}>
-                        <View style={styles.searchIcon}><Feather name="search" size={15} color="#0d0e15"  /></View>
-                        <View style={styles.searchTxtBox}>
-                            <Text style={styles.searchTxt}>大众马自达</Text>
-                        </View>
-                    </View>
-                    <View style={styles.historyItem}>
+                    {
+                        this.state.data.map((item,key)=>{
+
+                            return  <TouchableHighlight 
+                                    onPress={()=>{}}
+                                    activeOpacity={1} 
+                                    key={key}
+                                    onPress={()=>{this._jumpLinkFun(item)}}
+                                    underlayColor="transparent">
+                                        <View style={styles.historyItem} >
+                                            <View style={styles.searchIcon}><Feather name="search" size={15} color="#0d0e15"  /></View>
+                                            <View style={styles.searchTxtBox}>
+                                                <Text style={styles.searchTxt}>
+                                                    {item.title}
+                                                </Text>
+                                            </View>
+                                        </View>
+                                    </TouchableHighlight>
+                                    
+                        })
+                    }
+                   
+                    {/*
+                        <View style={styles.historyItem}>
                         <Image source={require("../assets/img/123.jpg")} style={styles.searchUser} />
                         <View style={styles.searchName}>
                             <Text style={styles.searchNameTxt}>大众马自达</Text>
                         </View>
-                    </View>
+                        </View>
+                    */}
+                    
                 </View>
 
                 {/* 搜索历史 end */}
 
                 {/* 热门搜索 start  */}
-                <View style={styles.historyTitWarp}>
-                    <View style={styles.historyTit}>
-                        <Text style={styles.historyTitTxt}>热门搜索</Text>
-                    </View>
-                </View>
-                <View style={styles.searchHot}>
-                    <View style={styles.hotBox}><Text style={styles.hotTxt}>热门车</Text></View>
-                    <View style={styles.hotBox}><Text style={styles.hotTxt}>大众速腾</Text></View>
-                    <View style={styles.hotBox}><Text style={styles.hotTxt}>奇瑞</Text></View>
-                    <View style={styles.hotBox}><Text style={styles.hotTxt}>比亚迪</Text></View>
-                    <View style={styles.hotBox}><Text style={styles.hotTxt}>雷克萨斯</Text></View>
-                    <View style={styles.hotBox}><Text style={styles.hotTxt}>本田</Text></View>
-                    <View style={styles.hotBox}><Text style={styles.hotTxt}>丰田</Text></View>
-                    <View style={styles.hotBox}><Text style={styles.hotTxt}>奥迪Q4</Text></View>
-                </View>
+                    {
+                        /*
+                            <View style={styles.historyTitWarp}>
+                                <View style={styles.historyTit}>
+                                    <Text style={styles.historyTitTxt}>热门搜索</Text>
+                                </View>
+                            </View>
+                            <View style={styles.searchHot}>
+                                <View style={styles.hotBox}><Text style={styles.hotTxt}>热门车</Text></View>
+                                <View style={styles.hotBox}><Text style={styles.hotTxt}>大众速腾</Text></View>
+                                <View style={styles.hotBox}><Text style={styles.hotTxt}>奇瑞</Text></View>
+                                <View style={styles.hotBox}><Text style={styles.hotTxt}>比亚迪</Text></View>
+                                <View style={styles.hotBox}><Text style={styles.hotTxt}>雷克萨斯</Text></View>
+                                <View style={styles.hotBox}><Text style={styles.hotTxt}>本田</Text></View>
+                                <View style={styles.hotBox}><Text style={styles.hotTxt}>丰田</Text></View>
+                                <View style={styles.hotBox}><Text style={styles.hotTxt}>奥迪Q4</Text></View>
+                            </View>
+                        */
+                    }
 
                 {/* 热门搜索 end  */}
 

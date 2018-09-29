@@ -85,7 +85,6 @@ export default class Videoplay extends Component {
     }
     _controlPlayFun(){   //控制视频播放还是暂停
         if(this.state.isPlay){       //暂停
-            console.log(111)
             this.setState({
                 isPlay:false,
                 iconName:"pause"

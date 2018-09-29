@@ -29,7 +29,12 @@ class Newsdetail extends Component {
         super(props, context)
         this.state={
             goTopTuff:null,
-            contentDat:null
+            contentDat:null,
+            relatedDat:[],
+            linkUrl:"Newsdetail",
+            bgVal:"rgba(255,255,255,0)",
+            goBackBtnColor:"#ffffff",
+            showState:"none"
         }
     }
     componentDidMount(){
@@ -42,6 +47,21 @@ class Newsdetail extends Component {
     _goTopFun(evt){
         if(!evt) return 
         let y=evt.nativeEvent.contentOffset.y
+        let color="#ffffff"
+        let showState="none"
+        let num=y/100>=1?1:y/100
+        if(num>=0.8){
+            color="#000000",
+            showState="flex"
+        }
+        this.setState({
+            bgVal:"rgba(255,255,255,"+num+")",
+            goBackBtnColor:color,
+            showState
+        })
+        this._setGoToFun(y)    //回到顶部
+    }
+    _setGoToFun(y){
         if(y<300){
             this.setState({
                 goTopTuff:false
@@ -60,7 +80,8 @@ class Newsdetail extends Component {
                 let data=dat.data.data
                 console.log("文章详情页",data)
                 this.setState({
-                    contentDat:{...data}
+                    contentDat:{...data},
+                    relatedDat:[...data.related]
                 })
             }
         }).catch((err)=>{
@@ -80,22 +101,43 @@ class Newsdetail extends Component {
                 showsVerticalScrollIndicator={false}
                 ref="scrollMain"
                 scrollEventThrottle={10}
+                stickyHeaderIndices={[0]}
                 onScroll={(v)=>{this._goTopFun(v)}}
                 >
-                    <View style={styles.newsBox}>
-                        <Image source={{uri:this.state.contentDat.cover}} style={styles.newsImg} />
-                        <View style={styles.backBtn}>
-                            <Ionicons onPress={()=>{ navigation.goBack() }} name="md-arrow-back" size={25} color="#ffffff" />
+
+                    <View style={[styles.backBtn,{backgroundColor:this.state.bgVal}]}>
+                        <View style={styles.iconBox}>
+                            <Ionicons 
+                            onPress={()=>{ navigation.goBack() }} 
+                            name="md-arrow-back" 
+                            size={25} 
+                            color={this.state.goBackBtnColor}
+                            style={styles.iconSty} 
+                            />
+                        </View>
+                        <Text style={[styles.barTopTit,{display:this.state.showState}]} numberOfLines={1}>
+                        {this.state.contentDat.title}
+                        </Text>
+                        {
+                            /*
                             <View style={styles.btnWarp}>
                                 <Image source={require("../assets/icon/share.png")} style={styles.shareBtn} />
                                 <Image source={require("../assets/icon/like.png")} style={styles.likeBtn} />
                             </View>
-                        </View>
+                            */
+                        }
+                       
+                    </View>
+
+
+
+
+                    <View style={styles.newsBox}>
+                        <Image source={{uri:this.state.contentDat.cover}} style={styles.newsImg} />
                         <Text style={styles.contentTitBox}>
                             {this.state.contentDat.title}
                         </Text>
                     </View>
-
                     <View style={styles.gzWarp}>
                         {/*  <Guanzhuitem />  */}
                     </View>
@@ -122,10 +164,19 @@ class Newsdetail extends Component {
                     <View style={styles.dingyueBox}>
                         <Text style={styles.dingyueTit}>我喜欢的汽车</Text>
                         <View style={styles.dingyueList}>
-                            <Listitem isImg={true} playTuff={false} />
-                            <Listitem isImg={true} playTuff={false} />
-                            <Listitem isImg={true} playTuff={false} />
-                            <Listitem isImg={true} playTuff={false} />
+                            {
+                                this.state.relatedDat.map((item,key)=>{
+                                    return <Listitem 
+                                            isImg={true} 
+                                            playTuff={false} 
+                                            renderDat={item} 
+                                            {...this.props}
+                                            linkUrl={this.state.linkUrl}
+                                            key={key}
+                                            />
+                                })
+                            }
+                                                                                 
                         </View>
                     </View>
             
@@ -162,17 +213,32 @@ const styles = StyleSheet.create({
         height:width*270/375
     },
     backBtn:{
-        position:"absolute",
-        top: 43,
-        left:16,
-        width:width-32,
+        top: 0,
+        left:0,
+        width:width,
+        display: 'flex',
         flexDirection: 'row',
         alignItems:"center",
-        justifyContent:"space-between"
+        justifyContent:"space-between",
+        zIndex:100,
+        height:70,
+        position: "absolute",
+        paddingHorizontal: 16
+    },
+    iconBox:{
+       width:100,
+       position: "absolute",
+       top:0,
+       left:0
     },
     btnWarp:{
         flexDirection: 'row',
-        alignItems:"center"
+        alignItems:"center",
+        justifyContent:"flex-end",
+        width:200,
+        position: "absolute",
+        top:0,
+        right:0
     },
     likeBtn:{
         width:22,
@@ -241,6 +307,16 @@ const styles = StyleSheet.create({
     },
     btnNone:{
         opacity:0
+    },
+    barTopTit:{
+        textAlign:"center",
+        fontSize:16,
+        color:"#000000",
+        marginTop: 3,
+        width:200,
+        position: "absolute",
+        left:"50%",
+        marginLeft:-100
     }
     
 	

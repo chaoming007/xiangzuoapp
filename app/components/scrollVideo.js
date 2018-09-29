@@ -36,7 +36,7 @@ export default class Videoitem extends Component {
                                 style={styles.touchSty} 
                                 activeOpacity={1} 
                                 underlayColor="transparent" 
-                                onPress={ ()=>{ navigation.navigate("Videodetail",{vid:item.id}) } }>
+                                onPress={ ()=>{ navigation.navigate("Videodetail",{id:item.id}) } }>
 
                                 <View style={ key===0?[styles.itemBox,styles.itemFirst]:styles.itemBox} >
                                         <Image source={{uri:item.cover}} style={styles.itemBgImg} />

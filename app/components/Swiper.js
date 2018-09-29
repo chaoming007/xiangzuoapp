@@ -51,7 +51,7 @@ export default class Swiperobj extends Component {
 
                         {
                             picDat.map((item,key)=>{
-                                return   <TouchableHighlight key={key}  style={styles.touchSty} activeOpacity={1} underlayColor="transparent" onPress={ ()=>{ navigation.navigate("Newsdetail",{nid:item.id}) } }>
+                                return   <TouchableHighlight key={key}  style={styles.touchSty} activeOpacity={1} underlayColor="transparent" onPress={ ()=>{ navigation.navigate("Newsdetail",{id:item.id}) } }>
                                             <View style={styles.imgViewBox} >
                                                 <Image source={{uri:item.cover }} style={styles.imgSty}/>
                                                 <View style={styles.imgTxt}>

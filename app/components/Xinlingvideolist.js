@@ -6,7 +6,8 @@ import {
   View,
   Image,
   Dimensions,
-  ScrollView
+  ScrollView,
+  TouchableHighlight
 } from 'react-native'
 
 const {height, width} = Dimensions.get('window')
@@ -19,7 +20,7 @@ export default class Xinlingvideolist extends Component {
     }
 
     render() {
-        let renderDat=this.props.renderDat
+        let { renderDat , navigation } = this.props
         return (
             <View style={styles.container}>
                 <ScrollView 
@@ -30,22 +31,30 @@ export default class Xinlingvideolist extends Component {
                 {
                     renderDat.map((item,key)=>{
 
-                        return  <View style={[styles.itemBox,key===0?styles.itemFirst:""]} key={key}>
-                                    <Image source={{uri:item.cover}} style={styles.itemBgImg} />
-                                    <View style={styles.itemContent}>
-                                        <Text style={styles.txtBox} numberOfLines={2}>
-                                            {item.title}
-                                        </Text>
-                                        <View style={styles.userBox}>
-                                            <Image source={{uri:item.author.portrait}} style={styles.userImg} />
-                                            <Text style={styles.userName}>{item.author.name}</Text>
+                        return  <TouchableHighlight 
+                                key={key}  
+                                activeOpacity={1} 
+                                underlayColor="transparent" 
+                                onPress={ ()=>{ navigation.navigate("Audiodetail",{id:item.id}) } }>
+
+                                        <View style={[styles.itemBox,key===0?styles.itemFirst:""]}>
+                                            <Image source={{uri:item.cover}} style={styles.itemBgImg} />
+                                            <View style={styles.itemContent}>
+                                                <Text style={styles.txtBox} numberOfLines={2}>
+                                                    {item.title}
+                                                </Text>
+                                                <View style={styles.userBox}>
+                                                    <Image source={{uri:item.author.portrait}} style={styles.userImg} />
+                                                    <Text style={styles.userName}>{item.author.name}</Text>
+                                                </View>
+                                            </View>
+                                            <View style={styles.playBox}>
+                                                <Image source={require("../assets/icon/playnum.png")} style={styles.playIcon} />
+                                                <Text style={styles.playTxt}>343545</Text>
+                                            </View>
                                         </View>
-                                    </View>
-                                    <View style={styles.playBox}>
-                                        <Image source={require("../assets/icon/playnum.png")} style={styles.playIcon} />
-                                        <Text style={styles.playTxt}>343545</Text>
-                                    </View>
-                                </View>
+
+                                </TouchableHighlight>
                     })
                 }
 

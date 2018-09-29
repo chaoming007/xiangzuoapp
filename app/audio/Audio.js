@@ -156,7 +156,7 @@ class Audio extends Component {
                     }
                 />
                 {/*搜索历史 start*/}
-                <Historypagemodel />
+                <Historypagemodel {...this.props}/>
                 {/*搜索历史 end */}
             </View>
         )

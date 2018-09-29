@@ -25,7 +25,12 @@ class Audiodetail extends Component {
         super(props, context)
         this.state={
             goTopTuff:null,
-            contentDat:{}
+            contentDat:{},
+            relatedDat:[],
+            linkUrl:"Audiodetail",
+            bgVal:"rgba(255,255,255,0)",
+            goBackBtnColor:"#ffffff",
+            showState:"none"
         }
     }
 
@@ -35,6 +40,21 @@ class Audiodetail extends Component {
     _goTopFun(evt){
         if(!evt) return 
         let y=evt.nativeEvent.contentOffset.y
+        let color="#ffffff"
+        let showState="none"
+        let num=y/100>=1?1:y/100
+        if(num>=0.8){
+            color="#000000",
+            showState="flex"
+        }
+        this.setState({
+            bgVal:"rgba(255,255,255,"+num+")",
+            goBackBtnColor:color,
+            showState
+        })
+        this._setGoToFun(y)    //回到顶部
+    }
+    _setGoToFun(y){
         if(y<300){
             this.setState({
                 goTopTuff:false
@@ -45,6 +65,8 @@ class Audiodetail extends Component {
             })
         }
     }
+
+
 
 
     componentDidMount() {
@@ -59,7 +81,8 @@ class Audiodetail extends Component {
                 let data=dat.data.data
                 console.log("音频数据",data)
                 this.setState({
-                    contentDat:{...data}
+                    contentDat:{...data},
+                    relatedDat:[...data.related]
                 })
             }
         }).catch((err)=>{
@@ -77,19 +100,40 @@ class Audiodetail extends Component {
                 showsVerticalScrollIndicator={false}
                 ref="scrollMain"
                 scrollEventThrottle={10}
+                stickyHeaderIndices={[0]}
                 onScroll={(v)=>{this._goTopFun(v)}}
                 >
 
+                <View style={[styles.backBtn,{backgroundColor:this.state.bgVal}]}>
+                    <View style={styles.iconBox}>
+                        <Ionicons 
+                        onPress={()=>{ navigation.goBack() }} 
+                        name="md-arrow-back" 
+                        size={25} 
+                        color={this.state.goBackBtnColor}
+                        style={styles.iconSty} 
+                        />
+                    </View>
+                    <Text style={[styles.barTopTit,{display:this.state.showState}]} numberOfLines={1}>
+                    {this.state.contentDat.title}
+                    </Text>
+                    {
+                        /*
+                        <View style={styles.btnWarp}>
+                            <Image source={require("../assets/icon/share.png")} style={styles.shareBtn} />
+                            <Image source={require("../assets/icon/like.png")} style={styles.likeBtn} />
+                        </View>
+                        */
+                    }
+            
+                </View>
+
+
+
+
+
 
                     <View style={styles.audioTopBox}>
-
-                        <View style={styles.backBtn}>
-                            <Ionicons onPress={()=>{ navigation.goBack() }} name="md-arrow-back" size={25} color="#000000" />
-                            <View style={styles.btnWarp}>
-                                <Image source={require("../assets/icon/share.png")} style={styles.shareBtn} />
-                                <Image source={require("../assets/icon/like.png")} style={styles.likeBtn} />
-                            </View>
-                        </View>
                        
                         <View style={styles.audioBgBox}>                        
                             <Image source={{uri:this.state.contentDat.cover}} style={styles.audioImg} />
@@ -120,10 +164,18 @@ class Audiodetail extends Component {
                     <View style={styles.dingyueBox}>
                         <Text style={styles.dingyueTit}>我喜欢的汽车</Text>
                         <View style={styles.dingyueList}>
-                            <Listitem isImg={true} playTuff={true} />
-                            <Listitem isImg={true} playTuff={true} />
-                            <Listitem isImg={true} playTuff={true} />
-                            <Listitem isImg={true} playTuff={true} />
+                            {
+                                this.state.relatedDat.map((item,key)=>{
+                                    return <Listitem 
+                                    renderDat={item} 
+                                    linkUrl={this.state.linkUrl}
+                                    {...this.props} 
+                                    isImg={true} 
+                                    playTuff={true} 
+                                    key={key} />
+                                })
+                            }
+                            
                         </View>
                     </View>
             
@@ -158,13 +210,17 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     backBtn:{
-        position:"absolute",
-        top: 43,
-        left:16,
-        width:width-32,
+        top: 0,
+        left:0,
+        width:width,
+        display: 'flex',
         flexDirection: 'row',
         alignItems:"center",
-        justifyContent:"space-between"
+        justifyContent:"space-between",
+        zIndex:100,
+        height:70,
+        position: "absolute",
+        paddingHorizontal: 16
     },
     btnWarp:{
         flexDirection: 'row',
@@ -316,7 +372,23 @@ const styles = StyleSheet.create({
     },
     btnNone:{
         opacity:0
-    }
+    },
+    barTopTit:{
+        textAlign:"center",
+        fontSize:16,
+        color:"#000000",
+        marginTop: 3,
+        width:200,
+        position: "absolute",
+        left:"50%",
+        marginLeft:-100
+    },
+    iconBox:{
+        width:100,
+        position: "absolute",
+        top:0,
+        left:0
+     }
     
 	
 })
