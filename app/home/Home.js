@@ -220,11 +220,6 @@ class Home extends Component {
 
 			</ScrollView>
 
-			{/*搜索历史 start*/}
-				<Historypagemodel {...this.props}/>
-            {/*搜索历史 end */}
-            
-
 		</View>
         )
     }

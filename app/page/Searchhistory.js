@@ -7,13 +7,14 @@ import {
   Image,
   TextInput,
   Dimensions,
-  TouchableHighlight
+  TouchableHighlight,
+  ScrollView
 } from 'react-native'
 
 const {height, width} = Dimensions.get('window')
 
 import Feather from 'react-native-vector-icons/Feather'
-
+import Spinkit from 'react-native-spinkit'
 import request from '../util/request'
 import config from '../util/config'
 
@@ -22,10 +23,13 @@ export default class Searchhistory extends Component {
     constructor(props, context) {
       super(props, context)
       this.state={
-          keywords:"年3",    //搜索关键字
+          keywords:"",    //搜索关键字
           data:[],          //请求数据
           focus:true,        //搜索框是否为焦点
-          linkUrl:"Videodetail"
+          linkUrl:"Videodetail",
+          loading:false,
+          noContent:false,      //默认搜索到了内容
+          timer:null
       }
     }
 
@@ -35,13 +39,23 @@ export default class Searchhistory extends Component {
 
     _changeTxtFun(txt){             //输入关键词搜索
         console.log(txt)
+        this.state.timer && clearTimeout(this.state.timer)
         if(txt==""){
             this.setState({
-                data:[]
+                data:[],
+                keywords:txt,
+                loading:false,
+                noContent:false
             })
-            return
         }else{
-            this._requestDatFun(txt)
+            this.setState({
+                loading:true,
+                keywords:txt,
+                noContent:false
+            })
+            this.state.timer=setTimeout(()=>{
+                this._requestDatFun(txt)
+            },300)
         }
     }
 
@@ -50,91 +64,127 @@ export default class Searchhistory extends Component {
             if(dat.data.errCode===0 && dat.data.errMsg==="成功"){
                 let data=dat.data.data.length>5?dat.data.data.slice(0,5):dat.data.data
                 console.log("搜索结果数据：",data)
-                this.setState({
-                    data:[...data]
-                })
+                if(data.length<=0){
+                    this.setState({
+                        loading:false,
+                        noContent:true,
+                        data:[...data]
+                    })
+                }else{
+                    setTimeout(()=>{
+                        this.setState({
+                            loading:false,
+                            data:[...data]
+                        })
+                    },300)
+                }
+                
             }
         }).catch((err)=>{
             console.log(err)
         }) 
     }
 
-    _jumpLinkFun(item){
-        let { navigation,setSearchHistory } = this.props
-        setSearchHistory()
-        navigation.navigate(this.state.linkUrl,{id:item.id})
+    _replaceStr(val){            //搜索结果替换
+        let  reg=new RegExp(this.state.keywords,"gi")
+        let resultVal=val.replace(reg,<Text style={styles.keywordsSty}>$1</Text>)            
+        return resultVal
     }
-
 
     render() {
         let { setSearchHistory ,navigation } = this.props
         return (
-            <View style={styles.container}>
-               
+        <View style={styles.container}>
+
                 <View style={styles.inpWarp}>
-                    <View style={styles.inpWarpSty}>
-                        <Feather name="search" size={20} style={styles.inpIcon}  />
-                        <TextInput 
-                        autoCorrect={false} 
-                        placeholder="请输入文字" 
-                        autoFocus={this.state.focus}
-                        onChangeText={(txt)=>{this._changeTxtFun(txt)}}
-                        style={styles.inpSty} >
-                        </TextInput>
-                    </View>
-                    <View style={styles.closeBox}>
-                        <Text style={styles.closeTxt} onPress={()=>{setSearchHistory()}} >取消</Text>
-                    </View>
+                        <View style={styles.inpWarpSty}>
+                            <Feather name="search" size={20} style={styles.inpIcon}  />
+                            <TextInput 
+                            autoCorrect={false} 
+                            placeholder="请输入文字" 
+                            autoFocus={this.state.focus}
+                            onChangeText={(txt)=>{this._changeTxtFun(txt)}}
+                            style={styles.inpSty} >
+                            </TextInput>
+                        </View>
+                        <View style={styles.closeBox}>
+                            <Text style={styles.closeTxt} onPress={()=>{ navigation.goBack() }}  >取消</Text>
+                        </View>
                 </View>
 
-
-                {/* 搜索历史 start */}
-
-                <View style={styles.historyTitWarp}>
-                    <View style={styles.historyTit}>
-                        <Text style={styles.historyTitTxt}>搜索历史</Text>
+                 
+                {
+                    this.state.keywords===""? <View style={styles.historyContentBox}>
+                    <View style={styles.historyTitWarp}>
+                        <View style={styles.historyTit}>
+                            <Text style={styles.historyTitTxt}>搜索历史</Text>
+                        </View>
+                        <View style={styles.clearWarp}>
+                            <Image source={require("../assets/icon/clear.png")} style={styles.clearHistory} />
+                        </View>
                     </View>
-                    <View style={styles.clearWarp}>
-                        <Image source={require("../assets/icon/clear.png")} style={styles.clearHistory} />
-                    </View>
-                </View>
 
-                <View style={styles.historyList}>
+                    <View style={styles.historyList}> 
+                        <TouchableHighlight 
+                        activeOpacity={1}     
+                        underlayColor="transparent">
+                            <View style={styles.historyItem} >
+                                <View style={styles.searchIcon}><Feather name="search" size={15} color="#0d0e15"  /></View>
+                                <View style={styles.searchTxtBox}>
+                                    <Text style={styles.searchTxt}>
+                                       这是一个搜索历史标题
+                                    </Text>
+                                </View>
+                            </View>
+                        </TouchableHighlight>                                      
+                    </View>
+                </View>:<View style={styles.resultBox}>
                     {
-                        this.state.data.map((item,key)=>{
-
-                            return  <TouchableHighlight 
-                                    onPress={()=>{}}
-                                    activeOpacity={1} 
-                                    key={key}
-                                    onPress={()=>{this._jumpLinkFun(item)}}
-                                    underlayColor="transparent">
-                                        <View style={styles.historyItem} >
-                                            <View style={styles.searchIcon}><Feather name="search" size={15} color="#0d0e15"  /></View>
-                                            <View style={styles.searchTxtBox}>
-                                                <Text style={styles.searchTxt}>
-                                                    {item.title}
-                                                </Text>
-                                            </View>
-                                        </View>
-                                    </TouchableHighlight>
-                                    
-                        })
+                        this.state.loading?<Spinkit isVisible={true} 
+                        color="#000000" 
+                        type="ThreeBounce" 
+                        size={38} ></Spinkit>:<View>
+                            {
+                                this.state.noContent?<View style={styles.noContent}>
+                                    <Text style={styles.noContentTxt}>没有搜索到相关内容！</Text>
+                                </View>:<ScrollView
+                                showsVerticalScrollIndicator={false}
+                                scrollEventThrottle={10}
+                                style={styles.searchList}
+                                >
+                                    {                              
+                                        this.state.data.map((item,key)=>{
+                                            return  <TouchableHighlight 
+                                                    activeOpacity={1} 
+                                                    key={key}
+                                                    onPress={()=>{navigation.navigate(this.state.linkUrl,{id:item.id})}}
+                                                    underlayColor="transparent">
+                                                        <View style={styles.historyItem} >
+                                                            <View style={styles.searchIcon}><Feather name="search" size={15} color="#0d0e15"  /></View>
+                                                            <View style={styles.searchTxtBox}>
+                                                                <Text style={styles.searchTxt}>
+                                                                    {this._replaceStr(item.title)}
+                                                                </Text>
+                                                            </View>
+                                                        </View>
+                                                    </TouchableHighlight>    
+                                                                                
+                                        })                                
+                                    }                  
+                                </ScrollView>
+                            }
+                        </View>
                     }
-                   
-                    {/*
-                        <View style={styles.historyItem}>
-                        <Image source={require("../assets/img/123.jpg")} style={styles.searchUser} />
-                        <View style={styles.searchName}>
-                            <Text style={styles.searchNameTxt}>大众马自达</Text>
-                        </View>
-                        </View>
-                    */}
-                    
-                </View>
+ 
+                }                  
+             
+            </View>     
+                
+                
+                }
+                
 
-                {/* 搜索历史 end */}
-
+        
                 {/* 热门搜索 start  */}
                     {
                         /*
@@ -158,7 +208,7 @@ export default class Searchhistory extends Component {
 
                 {/* 热门搜索 end  */}
 
-            </View>
+        </View>
         )
     }
   }
@@ -168,7 +218,9 @@ export default class Searchhistory extends Component {
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#ffffff',
-        paddingTop: 46
+        paddingTop: 46,
+        flexDirection:"column",
+        height:height
     },
     inpWarp:{
         marginHorizontal: 16,
@@ -211,7 +263,10 @@ export default class Searchhistory extends Component {
         flexDirection:'row',
         alignItems:"center",
         justifyContent:"space-between",
-        marginHorizontal: 16
+        marginHorizontal: 16,
+        height:30,
+        width:width-32
+
     },
     historyTit:{
         height:36,
@@ -232,7 +287,9 @@ export default class Searchhistory extends Component {
         height:15
     },
     historyList:{
-        marginBottom: 15
+        marginBottom: 15,
+        flex:1,
+        height:500
     },
     historyItem:{
         flexDirection: 'row',
@@ -297,6 +354,34 @@ export default class Searchhistory extends Component {
         textAlign:"center",
         fontSize: 14,
         color:"#0D0E15",
+    },
+    resultBox:{
+        flex:1
+    },
+    historyContentBox:{
+        flex:1,
+        flexDirection:"column"
+    },
+    searchList:{
+        flex:1,
+        width:"100%"
+    },
+    noContent:{
+        flex:1,
+        justifyContent:"flex-start",
+        alignItems:"center",
+        width:"100%",
+        paddingTop:20
+    },
+    noContentTxt:{
+        height:50,
+        lineHeight:50,
+        textAlign:"center",
+        fontSize: 16,
+        color:"#999999"
+    },
+    keywordsSty:{
+        color:"#cc0000"
     }
    
   })

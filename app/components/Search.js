@@ -25,7 +25,12 @@ export default class Search extends Component {
 
         return (
             <View style={styles.container}>
-                <TouchableHighlight style={styles.touchSty} activeOpacity={1} underlayColor="transparent" onPress={ ()=>{ setSearchHistory() } }>
+                <TouchableHighlight 
+                style={styles.touchSty} 
+                activeOpacity={1} 
+                underlayColor="transparent" 
+                onPress={ ()=>{ navigation.navigate("Historysearch") } }
+                >
                     <View style={styles.inpWarp}>
                         <Feather name="search" size={20} style={styles.inpIcon}  />
                         <View style={styles.inpSty} ></View>

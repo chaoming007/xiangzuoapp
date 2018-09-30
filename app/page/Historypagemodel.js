@@ -26,15 +26,25 @@ class Historypagemodel extends Component {
     render() {
 		let {state}=this.props
         return (
-            <View>
-                <Modal
-                animationType='slide'           
-                transparent={false}              // 透明
-                visible={state.searchHistoryTuff}   // 是否显示
-                >
-                    <Searchhistory {...this.props} />
-                </Modal>
+            <View style={styles.mainBox}>
+
+                <Searchhistory {...this.props} />
+                
+                {/*
+                
+                <View>
+                    <Modal
+                    animationType='slide'           
+                    transparent={false}              // 透明
+                    visible={state.searchHistoryTuff}   // 是否显示
+                    >
+                        <Searchhistory {...this.props} />
+                    </Modal>
+                </View>
+                */}
+               
             </View>
+            
         )
     }
 }
@@ -47,6 +57,15 @@ const styles = StyleSheet.create({
         justifyContent:'flex-start',
         alignItems: 'center',
         backgroundColor: '#ffffff'
+    },
+    mainBox:{
+        width:width,
+        height:height,
+        backgroundColor:"#ffffff",
+        position:"absolute",
+        top:0,
+        left:0,
+        zIndex:10000
     }
 
 })
