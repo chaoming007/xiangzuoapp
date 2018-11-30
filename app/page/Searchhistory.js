@@ -163,7 +163,7 @@ export default class Searchhistory extends Component {
                                                             <View style={styles.searchIcon}><Feather name="search" size={15} color="#0d0e15"  /></View>
                                                             <View style={styles.searchTxtBox}>
                                                                 <Text style={styles.searchTxt}>
-                                                                    {this._replaceStr(item.title)}
+                                                                    {item.title}
                                                                 </Text>
                                                             </View>
                                                         </View>
